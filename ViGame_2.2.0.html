@@ -1,0 +1,4336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViGame</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f0f0; }
+        h1, h2, h3 { margin: 20px 0; text-align: center; }
+        .container { max-width: 800px; margin: auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .menu-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+        .menu-buttons button { font-size: 18px; padding: 15px; border: none; border-radius: 8px; cursor: pointer; }
+        button.rate {
+    background-color: #ffc107; /* Цвет кнопки */
+    color: white;
+    font-size: 18px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.rate:hover {
+    background-color: #e0a800; /* Более тёмный цвет при наведении */
+    transform: scale(1.05); /* Лёгкое увеличение */
+}
+         .menu-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .menu-buttons button {
+        font-size: 18px;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .social-settings {
+    background: #f9f9f9;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    }
+
+    .promo {
+        background-color: #2196f3;
+        color: white;
+    }
+
+    .rate {
+        background-color: #ffc107;
+        color: white;
+    }
+
+    .back {
+        background-color: #9e9e9e;
+        color: white;
+    }
+        button.play { background-color: #4caf50; color: white; }
+        button.promo { background-color: #2196f3; color: white; }
+        button.shop { background-color: #9c27b0; color: white; }
+        button.profile { background-color: #e91e63; color: white; }
+        button.change-name { background-color: #00bcd4; color: white; }
+        button.back { background-color: #9e9e9e; color: white; }
+        button:hover { opacity: 0.9; }
+        .hidden { display: none; }
+        .answers button { margin: 10px; padding: 10px 20px; font-size: 18px; border: none; background-color: #4caf50; color: white; border-radius: 5px; cursor: pointer; }
+        .answers button:hover { background-color: #45a049; }
+        .cards-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; justify-items: center; }
+        .cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Оставляем 4 карты в ряду */
+    gap: 8px; /* Уменьшаем расстояние между картами */
+    justify-items: center;
+}
+
+.avatar-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+#avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+#avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #f0f0f0; /* Серый фон на случай отсутствия фото */
+    border: 2px solid black; /* Тонкая чёрная обводка */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+}
+
+#avatar-placeholder {
+    display: none; /* Скрываем по умолчанию */
+    position: absolute;
+    top: 50%; /* Центрируем текст */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px; /* Мелкий, уютный шрифт */
+    color: #777; /*s*/
+    text-align: center; /* Центрируем текст */
+    line-height: 1.2; /* Красивый отступ между строками */
+    pointer-events: none; /* Текст не будет кликабельным */
+}
+
+h4 {
+    font-size: 24px; /* Размер меньше, чем у примера */
+    color: #777; /* Светло-серый цвет */
+    margin-bottom: 10px; /* Отступ от слова до примера */
+    text-align: center;
+}
+
+#math-question {
+    font-size: 48px; /* Крупный текст для самого примера */
+    font-weight: bold; /* Жирный текст */
+    color: #333; /* Темный цвет */
+    text-align: center;
+    margin: 20px 0; /* Отступы сверху и снизу */
+}
+
+.shop-card {
+    flex: 0 0 auto; /* Карточки выстраиваются в линию */
+    width: 200px;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+.shop-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.shop-card .price {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.shop-card .price.red {
+    color: red;
+}
+
+.shop-card button {
+    font-size: 16px;
+    padding: 10px 20px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.shop-card button:hover {
+    background: #45a049;
+}
+
+.shop-card button.disabled {
+    background: gray;
+    cursor: not-allowed;
+}
+
+#shop-carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    overflow-x: auto;
+}
+
+.card {
+    width: 70px; /* Уменьшаем ширину карты */
+    height: 90px; /* Уменьшаем высоту карты */
+    background: lightgray;
+    border-radius: 8px;
+    font-size: 18px; /* Уменьшаем размер текста */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.card.matched {
+    background: #4caf50;
+    color: white;
+    pointer-events: none;
+}
+
+.card.flipped {
+    pointer-events: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.discount-comment {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.progress-card {
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: width 0.3s ease;
+}
+
+#artifacts-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 карточек в ряд */
+    gap: 8px; /* Промежутки между карточками */
+    justify-items: center; /* Центрируем карточки по горизонтали */
+    padding: 10px; /* Внутренние отступы контейнера */
+}
+
+.artifact-card {
+    width: 50px; /* Маленькая ширина карточки */
+    height: 50px; /* Маленькая высота карточки */
+    background-color: white; /* Белый фон карточки */
+    border: 2px solid lightgray; /* Серая обводка для закрытых карточек */
+    border-radius: 4px; /* Лёгкое скругление углов */
+    display: flex;
+    align-items: center; /* Центрируем текст по вертикали */
+    justify-content: center; /* Центрируем текст по горизонтали */
+    font-size: 12px; /* Небольшой текст */
+    color: black; /* Цвет текста */
+    cursor: pointer;
+    transition: border-color 0.3s, transform 0.2s;
+}
+
+.artifact-card:hover {
+    transform: scale(1.1); /* Лёгкое увеличение при наведении */
+}
+
+.artifact-card.open {
+    border-color: gold; /* Жёлтая обводка для открытых карточек */
+}
+
+.favorite-star {
+    position: absolute; /* Абсолютное позиционирование внутри карточки */
+    top: 0; /* Прижимаем к самому верху */
+    right: 0; /* Прижимаем к самому правому краю */
+    padding: 5px; /* Немного отступов для удобства клика */
+    font-size: 16px; /* Размер звезды */
+    color: black; /* Цвет звезды */
+    cursor: pointer; /* Указатель при наведении */
+    display: none; /* По умолчанию скрыто */
+}
+
+.artifact-card.open .favorite-star {
+    display: block; /* Показываем звезду только на открытых карточках */
+}
+
+#policy-modal {
+    display: none;
+}
+
+#overlay {
+    display: none;
+}
+
+#music-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Расстояние между кнопками */
+    margin-top: 20px;
+}
+
+#music-buttons button {
+    font-size: 16px;
+    padding: 10px 15px; /* Уменьшенные отступы */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1; /* Растягиваем кнопки равномерно */
+    max-width: 100px; /* Максимальная ширина кнопки */
+    transition: background-color 0.3s ease;
+}
+
+#music-buttons button:nth-child(1) {
+    background-color: #ff5722; /* Красная кнопка */
+    color: white;
+}
+
+#music-buttons button:nth-child(2) {
+    background-color: #4caf50; /* Зелёная кнопка */
+    color: white;
+}
+
+#music-buttons button:nth-child(3) {
+    background-color: #2196f3; /* Синяя кнопка */
+    color: white;
+}
+
+#music-buttons button:disabled {
+    background-color: #ccc; /* Серый фон для отключённых кнопок */
+    color: #888;
+    cursor: not-allowed;
+}
+
+#flower-answers button {
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50; /* Зеленый цвет */
+    color: white;
+    cursor: pointer;
+    width: 100%; /* Кнопки будут растягиваться на весь контейнер */
+    text-align: center;
+    margin-bottom: 10px; /* Отступ между кнопками */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#flower-answers button:hover {
+    background-color: #45a049; /* Более темный зеленый при наведении */
+    transform: scale(1.05); /* Легкое увеличение */
+}
+
+/* Общее оформление для игры "Находка" */
+#emoji-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 колонок */
+    grid-template-rows: repeat(8, 1fr); /* 8 рядов */
+    gap: 5px;
+    justify-items: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#emoji-container span {
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+button.locked {
+    background-color: #f0f0f0; /* Светло-серый фон */
+    color: #c0c0c0; /* Серый текст */
+    cursor: not-allowed; /* Курсор "запрещено" */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+}
+
+button.unlocked {
+    background-color: #4caf50; /* Зелёный фон */
+    color: white; /* Белый текст */
+    cursor: pointer; /* Указатель на мышке */
+}
+
+button.unlocked:hover {
+    background-color: #45a049; /* Тёмно-зелёный при наведении */
+}
+
+button.locked:hover {
+    background-color: #f0f0f0; /* Никаких изменений при наведении */
+}
+
+button.find-difference {
+    background-color: #ff9800; /* Оранжевый */
+    color: white;
+}
+
+button.find-difference:hover {
+    background-color: #e68900;
+    transform: scale(1.05);
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+label input {
+    width: 20px;
+    height: 20px;
+    cursor: not-allowed;
+}
+
+label input:enabled {
+    cursor: pointer;
+}
+
+#balance-display {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    font-size: 16px; /* Немного уменьшаем текст */
+    font-weight: bold;
+    background: #2196f3;
+    color: white;
+    padding: 8px; /* Уменьшаем отступы */
+    border-radius: 8px;
+}
+        .version { font-size: 12px; text-align: center; margin-top: -10px; }
+        #country-answers button {
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50; /* Зеленый цвет */
+    color: white;
+    cursor: pointer;
+    width: 100%; /* Кнопки будут растягиваться на весь контейнер */
+    text-align: center;
+    margin-bottom: 10px; /* Отступ между кнопками */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#country-answers button:hover {
+    background-color: #45a049; /* Более темный зеленый при наведении */
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+#snake-grid div {
+    transition: background-color 0.2s, transform 0.2s; /* Плавные изменения */
+}
+
+    </style>
+</head>
+<body>
+<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 999;"></div>
+    <div id="balance-display">$: <span id="balance">0</span> | <span id="multipliers" style="margin-left: 15px; font-weight: bold;">X: <span id="multiplier-count">0</span></span> | <span id="settings-icon" style="cursor: pointer; margin-left: 10px;">⚙️</span>
+</div>
+
+    <h1 style="display: flex; flex-direction: column; align-items: flex-start; margin-left: 20px;">
+        ViGame
+        <span class="version" style="font-size: 12px; margin-top: 5px; margin-left: 0;">version 2.1.0</span>
+    </h1>
+
+    <!-- Главное меню -->
+<div id="main-menu" class="container">
+    <div class="menu-buttons">
+        <button class="promo" onclick="showScreen('game-menu'); updateGameMenu()">🎮 Игры</button>
+        <button class="promo" onclick="showScreen('gift-menu')">🎁 Подарок для друга ❤️</button>
+        <button class="promo" onclick="showScreen('artifacts-menu')">🔮 Артефакты</button>
+        <button class="profile" onclick="showScreen('profile')">👤 Профиль</button>
+        <button class="shop" onclick="showScreen('shop')">🛒 Магазин</button>
+        <h2>Загрузка прогресса</h2>
+        <button onclick="saveProgress()">💾 Сохранить прогресс</button>
+        <button onclick="loadProgress()">📂 Загрузить прогресс</button>
+        <h2>Прочее</h2>
+        <button class="rate" onclick="showScreen('rate-menu')">⭐ Оценить</button>
+    </div>
+</div>
+
+    <!-- Артефакты -->
+<div id="artifacts-menu" class="container hidden" style="padding: 10px;">
+    <h2 style="font-size: 18px; margin-bottom: 10px;">🔮 Артефакты</h2>
+    <div id="artifacts-container"></div>
+    <button class="back" onclick="showScreen('main-menu')" style="margin-top: 10px; font-size: 14px; padding: 8px 15px;">🔙 Назад</button>
+</div>
+
+    <!-- Меню игр -->
+<div id="game-menu" class="container hidden">
+    <h2>🎮 Выберите игру</h2>
+    <div class="menu-buttons">
+        <button id="math-game-btn" onclick="showScreen('math-mode-menu')">🧮 Математика</button>
+        <button id="flowers-game-btn" class="locked" onclick="startFlowersGame()">🌸 Цветы</button>
+        <button id="music-game-btn" class="locked" onclick="startMusicGame()">🎵 Музыка</button>
+        <button id="memory-game-btn" class="locked" onclick="startMemoryGame()">🃏 Запоминалка</button>
+        <button id="snake-game-btn" class="locked" onclick="startSnakeGame()">🐍 Змейка</button>
+        <button id="fish-game-btn" class="locked" onclick="startFishGame()">🐟 Рыбка</button>
+        <button id="english-game-btn" class="locked" onclick="startEnglishGame()">📚 Английский</button>
+        <button id="countries-game-btn" class="locked" onclick="startCountriesGame()">🌍 Страны</button>
+        <button id="find-difference-btn" class="locked" onclick="startFindDifferenceGame()">🔍 Находка</button>
+        <button id="chemistry-game-btn" class="locked" onclick="startChemistryGame()">💡 Химия</button>
+        <button class="back" onclick="showScreen('main-menu')">🔙 Назад</button> <!-- Кнопка возврата -->
+    </div>
+</div>
+
+    <!-- Меню Музыки --->
+<div id="music-game" class="container hidden">
+    <h2>🎵 Музыка</h2>
+    <p id="music-prompt">Приготовьтесь...</p>
+    <div id="music-buttons">
+        <button onclick="playMusicButton('low')">Низкая</button>
+        <button onclick="playMusicButton('mid')">Средняя</button>
+        <button onclick="playMusicButton('high')">Высокая</button>
+    </div>
+    <button class="back" onclick="endMusicGame()">🔙 Завершить игру</button>
+</div>
+
+    <!-- Меню подарков -->
+<div id="gift-menu" class="container hidden" style="max-width: 700px; padding: 30px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); border-radius: 10px; margin-top: 50px;">
+    <h2 style="font-size: 30px; margin-bottom: 25px;">🎁 Подарок для друга</h2>
+
+    <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+        <button onclick="showScreen('send-gift')" 
+                style="padding: 15px 30px; font-size: 20px; border-radius: 8px; background-color: #4caf50; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+            📤 Отправить подарок
+        </button>
+        <button onclick="showScreen('receive-gift')" 
+                style="padding: 15px 30px; font-size: 20px; border-radius: 8px; background-color: #2196f3; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+            📥 Получить подарок
+        </button>
+    </div>
+
+    <button class="back" onclick="showScreen('main-menu')" 
+            style="margin-top: 30px; padding: 12px 25px; font-size: 18px; border-radius: 8px; background-color: #9e9e9e; color: white; border: none; cursor: pointer; transition: background-color 0.3s;">
+        🔙 Назад
+    </button>
+</div>
+
+<!-- Меню получения подарка -->
+<div id="receive-gift" class="container hidden" style="max-width: 600px; padding: 30px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); border-radius: 10px; margin-top: 50px;">
+    <h2 style="font-size: 28px;">Получить подарок</h2>
+    <label for="gift-code" style="font-size: 18px; margin-top: 15px; display: block;">Введите промокод:</label>
+    <input type="text" id="gift-code" placeholder="Введите промокод" 
+           style="width: 100%; padding: 12px; font-size: 16px; margin-top: 10px; border: 1px solid #ccc; border-radius: 6px;">
+    <button onclick="activateGiftPromo()" 
+            style="padding: 12px 25px; font-size: 18px; margin-top: 25px; border-radius: 8px; background-color: #4caf50; color: white; border: none; cursor: pointer;">
+        Активировать
+    </button>
+    <p id="gift-receive-result" style="margin-top: 15px; color: green; font-size: 16px;"></p>
+    <button class="back" onclick="showScreen('gift-menu')" 
+            style="margin-top: 25px; padding: 12px 25px; font-size: 18px; border-radius: 8px; background-color: #9e9e9e; color: white; border: none; cursor: pointer;">
+        🔙 Назад
+    </button>
+</div>
+
+    <!-- Меню отправки подарка -->
+<div id="send-gift" class="container hidden" style="max-width: 600px; padding: 30px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); border-radius: 10px; margin-top: 50px;">
+    <h2 style="font-size: 28px;">Отправить подарок</h2>
+    <label for="gift-points" style="font-size: 18px; margin-top: 15px; display: block;">Введите количество баллов:</label>
+    <input type="number" id="gift-points" placeholder="Например, 100" 
+           style="width: 100%; padding: 12px; font-size: 16px; margin-top: 10px; border: 1px solid #ccc; border-radius: 6px;">
+    <button onclick="sendGiftPromo()" 
+            style="padding: 12px 25px; font-size: 18px; margin-top: 25px; border-radius: 8px; background-color: #fbc02d; color: white; border: none; cursor: pointer;">
+        Сгенерировать промокод
+    </button>
+    <p id="gift-result" style="margin-top: 15px; color: green; font-size: 16px;"></p>
+    <button class="back" onclick="showScreen('gift-menu')" 
+            style="margin-top: 25px; padding: 12px 25px; font-size: 18px; border-radius: 8px; background-color: #9e9e9e; color: white; border: none; cursor: pointer;">
+        🔙 Назад
+    </button>
+</div>
+
+    <!-- Меню настроек -->
+<div id="settings-menu" class="container hidden">
+    <h2>⚙️ Настройки</h2>
+    <div class="menu-buttons">
+        <button class="promo" onclick="showImportExport()">📤 Имп/Экс.</button>
+        <button class="promo" onclick="showAgreement()">📜 Политика соглашения</button>
+    </div>
+
+    <div class="social-settings">
+        <h3>Соц-сети</h3>
+        <button class="promo" onclick="window.open('https://t.me/ViGame_official', '_blank')">🗞️ Телеграм</button>
+    </div>
+
+    <div class="menu-buttons">
+        <button class="back" onclick="showScreen('main-menu')">🔙 Назад</button>
+    </div>
+</div>
+
+<!-- Затемнение фона -->
+<div id="overlay" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 999;"></div>
+
+<!-- Модальное окно политики соглашения -->
+<div id="agreement-modal" class="container hidden" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 700px; z-index: 1000; background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);">
+    <h2>Условия использования ViGame</h2>
+    <div style="text-align: left; max-height: 400px; overflow-y: auto; padding: 20px;">
+        <p>1. Введение<br>
+            ViGame — это интерактивная игра с мини-играми, функционалом сохранения и возможности импорта/экспорта данных. Настоящие условия описывают основные правила использования игры, взаимодействия с профилем и работы с внутриигровыми ресурсами.
+        </p>
+        <p>2. Профиль и сохранение данных<br>
+            Пользователи создают уникальный профиль с возможностью изменения имени и загрузки аватара. Прогресс и настройки игры сохраняются локально на устройстве пользователя.<br>
+            При сохранении прогресса часть данных может быть передана разработчику для обработки или восстановления, в случае активации функции экспорта.
+        </p>
+        <p>3. Игровой процесс и баланс<br>
+            Игра включает в себя систему баллов и прогресса, которые увеличиваются за выполнение заданий. Некоторые функции и мини-игры могут быть заблокированы и требуют покупки за внутриигровую валюту.<br>
+            Встроены бонусы и мультипликаторы, ускоряющие накопление прогресса.
+        </p>
+        <p>4. Промокоды и подарки<br>
+            Игроки могут генерировать промокоды и делиться ими с друзьями или активировать свои коды. Промокоды поддерживаются через Telegram и могут быть использованы один раз.
+        </p>
+        <p>5. Экспорт и импорт профиля<br>
+            Пользователи могут экспортировать свой профиль с помощью API-ключа через Telegram-бот. Импорт данных возможен только один раз и требует ручного ввода API-ключа.
+        </p>
+        <p>6. Сбор и использование данных<br>
+            При обычном сохранении игры данные профиля (включая аватар, имя, прогресс) могут быть переданы разработчику для улучшения сервиса и восстановления данных в случае утраты.<br>
+            Все передаваемые данные используются исключительно для нужд игры и не передаются третьим лицам.
+        </p>
+        <p>7. Ограничения и безопасность<br>
+            Использование стороннего программного обеспечения или попытки взлома могут привести к потере данных или блокировке профиля.<br>
+            Разработчик не несет ответственности за потерю данных из-за сбоев устройства или браузера пользователя.
+        </p>
+        <p>8. Обратная связь<br>
+            Пользователи могут оставлять отзывы и предложения по улучшению игры. Отзывы могут быть отправлены разработчику через Telegram-бот.
+        </p>
+        <p>9. Изменения в условиях<br>
+            Разработчик оставляет за собой право изменять условия использования в любое время. Об изменениях пользователи будут уведомлены через обновления игры.
+        </p>
+    </div>
+    <button class="back" style="margin: 20px auto; display: block;" onclick="closeAgreement()">🔙 Закрыть</button>
+</div>
+
+<!-- Меню Импорт/Экспорт -->
+<div id="import-export-menu" class="container hidden">
+    <h2>📤 Импорт / Экспорт</h2>
+    <div class="menu-buttons">
+        <button class="promo" onclick="exportData()">📤 Экспортировать данные</button>
+        <button class="promo" onclick="promptImport()">📥 Импортировать данные</button>
+    </div>
+    <p id="export-result" style="margin-top: 10px; color: green;"></p>
+    <p id="import-result" style="margin-top: 10px; color: red;"></p>
+    <div class="menu-buttons">
+        <button class="back" onclick="showScreen('settings-menu')">🔙 Назад</button>
+    </div>
+</div>
+
+    <!-- Оценка --->
+    <div id="rate-menu" class="container hidden">
+        <h2>Оцените нас</h2>
+        <p>Пожалуйста, выберите оценку:</p>
+    <div class="star-rating" id="star-rating">
+        <span data-stars="1">☆</span>
+        <span data-stars="2">☆</span>
+        <span data-stars="3">☆</span>
+        <span data-stars="4">☆</span>
+        <span data-stars="5">☆</span>
+    </div>
+        <textarea id="user-comment" placeholder="Оставьте комментарий (по желанию)" style="width: 100%; margin-top: 10px; padding: 10px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc;"></textarea>
+        <button class="promo" onclick="submitRating()">Отправить</button>
+        <button class="back" onclick="showScreen('main-menu')">🔙 Назад</button>
+</div>
+
+    <!-- Математика -->
+    <div id="math-game" class="container hidden">
+        <h2>Математика</h2>
+        <h3>Время: <span id="math-timer">10</span> сек</h3>
+        <h4 style="font-size: 24px; text-align: center; color: #777; margin-bottom: 10px;">Пример:</h4>
+<h3 id="math-question" style="font-size: 48px; text-align: center; font-weight: bold; margin: 20px 0; color: #333;"></h3>
+        <div class="answers" id="math-answers"></div>
+        <button class="back" onclick="endMathGame()">🔙 Завершить игру</button>
+    </div>
+
+      <!-- Игра: Запоминалка -->
+    <div id="memory-game" class="container hidden">
+        <h2>Запоминалка</h2>
+        <p>Время: <span id="memory-timer">60</span> сек</p>
+        <div class="cards-container" id="cards-container"></div>
+        <p>Пар найдено: <span id="memory-pairs-found">0</span></p>
+        <button class="back" onclick="endMemoryGame()">🔙 Завершить игру</button>
+    </div>
+
+      <!---Английский--->
+    <div id="english-game" class="container hidden">
+        <h2>📚 Английский</h2>
+        <h3>Время: <span id="english-timer">10</span> сек</h3>
+        <h3>Слово: <span id="english-question"></span></h3>
+        <div class="answers" id="english-answers"></div>
+        <button class="back" onclick="endEnglishGame()">🔙 Завершить игру</button>
+    </div>
+
+    <!--Цветы ---->
+<div id="flowers-game" class="container hidden">
+    <h2>🌸 Цветы</h2>
+    <p>Угадайте название цветка!</p>
+    <h3>🌸 Цветок: <span id="flower-emoji"></span></h3>
+    <h4> ⏳ Время: <span id="flowers-timer"> 10</span>сек.</h4>
+    <div id="flower-answers"></div>
+    <button class="back" onclick="endFlowersGame()">🔙 Завершить игру</button>
+</div>
+
+    <!-- Игра: Страны -->
+<div id="countries-game" class="container hidden">
+    <h2>🌍 Страны</h2>
+    <h3>Время: <span id="countries-timer">15</span> сек</h3>
+    <div id="countries-question" style="font-size: 150px; text-align: center;"></div>
+    <div class="answers" id="countries-answers"></div>
+    <button class="back" onclick="endCountriesGame()">🔙 Завершить игру</button>
+</div>
+
+    <!-- Профиль -->
+<div id="profile" class="container hidden">
+    <h2>Ваш профиль</h2>
+    <!-- Блок с аватаром и именем -->
+    <div style="display: flex; align-items: center; justify-content: start; gap: 20px;">
+        <div id="avatar-container" style="position: relative; width: 100px; height: 100px;">
+            <img id="avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            <span id="avatar-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; color: #777; text-align: center;"></span>
+        </div>
+        <div>
+            <p>Имя: <span id="nickname-display">Игрок</span></p>
+            <div style="margin-top: 10px;">
+                <button class="change-name" onclick="changeName()">✏️ Изменить имя</button>
+                <button class="change-avatar" onclick="selectAvatar()">📷</button>
+                <input type="file" id="avatar-input" accept="image/*" style="display: none;" onchange="updateAvatar(event)">
+            </div>
+        </div>
+    </div>
+    <p>Ваш тэг: <span id="player-tag"></span></p>
+
+    <!-- Карточка с прогресс-баром -->
+    <div class="progress-card">
+        <h3 id="profile-status-display">Камень 🩶</h3>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <p id="progress-text">0/500</p>
+    </div>
+
+    <!-- Избранный артефакт -->
+    <p id="profile-favorite">🔮 Избранный Артефакт: Пусто</p>
+
+    <!-- Кнопка назад -->
+    <button class="back" onclick="showScreen('main-menu')">🔙 Назад</button>
+</div>
+
+    <!-- Сигма ---->
+    <div id="shop" class="container hidden">
+    <h2>🛒 Магазин</h2>
+    <div id="shop-carousel" style="display: flex; flex-wrap: nowrap; gap: 20px; overflow-x: auto; padding: 20px;">
+        <!-- Акции будут динамически добавляться сюда -->
+    </div>
+    <button class="back" onclick="showScreen('main-menu')">🔙 Назад</button>
+</div>
+
+    <!-- Экран игры "Змейка" -->
+<div id="snake-game" class="container hidden">
+    <h2>🐍 Змейка</h2>
+    <div id="snake-grid" style="display: grid; grid-template-columns: repeat(15, 1fr); gap: 2px; width: 300px; height: 300px; margin: 20px auto;"></div>
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 10px;">
+        <button onclick="changeDirection('up')" style="width: 60px; height: 60px; font-size: 24px;">🔼</button>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 10px;">
+        <button onclick="changeDirection('left')" style="width: 60px; height: 60px; font-size: 24px;">◀️</button>
+        <button onclick="changeDirection('down')" style="width: 60px; height: 60px; font-size: 24px;">🔽</button>
+        <button onclick="changeDirection('right')" style="width: 60px; height: 60px; font-size: 24px;">▶️</button>
+    </div>
+    <button class="back" onclick="endSnakeGame()" style="margin-top: 20px;">🔙 Завершить игру</button>
+</div>
+
+    <!---Экран "Рыбка"--->
+<div id="fish-game-container" 
+    class="hidden" 
+    style="position: relative; 
+           margin: 20px auto; 
+           width: 90%; 
+           max-width: 960px; 
+           height: 540px; 
+           overflow: hidden; 
+           border: 2px solid black; 
+           border-radius: 10px; 
+           background-color: #f0f8ff;">
+    <h2 style="margin: 10px; font-size: 24px;">🐟 Рыбка</h2>
+    <canvas id="fish-game-canvas" width="960" height="540"></canvas>
+    <button class="back" 
+            onclick="endFishGame()" 
+            style="margin: 15px; 
+                   padding: 10px 20px; 
+                   font-size: 18px; 
+                   color: white; 
+                   background-color: #ff5722; 
+                   border: none; 
+                   border-radius: 5px; 
+                   cursor: pointer;">
+        🔙 Выйти в меню
+    </button>
+</div>
+
+    <!-- Меню выбора режима Математики -->
+<div id="math-mode-menu" class="container hidden">
+    <h2>Выберите режим:</h2>
+    <div class="menu-buttons">
+        <button onclick="startMathGame()">➕ Сложение</button>
+        <button onclick="startMultiplicationGame()">✖️ Умножение</button>
+        <button onclick="startDivisionGame()">➗ Деление</button>
+        <button class="back" onclick="showScreen('game-menu')">🔙 Назад</button>
+    </div>
+</div>
+
+    <!-- Экран игры "Находка" -->
+<div id="find-difference-game" class="container hidden">
+    <h2>🔍 Находка</h2>
+    <p>⏳ Время: <span id="find-difference-timer">30</span> сек</p>
+    <p>Найдите отличающееся эмодзи!</p>
+    <div id="emoji-container"></div>
+    <button class="back" onclick="endFindDifferenceGame()">🔙 Завершить игру</button>
+</div>
+
+    <!--- Экран игры "Химия" --->
+<div id="chemistry-game" class="container hidden">
+    <h2>💡 Химия</h2>
+    <h3>⏳ Время: <span id="chemistry-timer">10</span> сек</h3>
+    <div id="chemistry-symbol" style="
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        width: 80px; 
+        height: 80px; 
+        margin: 20px auto; 
+        border: 2px solid #333; 
+        border-radius: 10px; 
+        font-size: 32px; 
+        font-weight: bold; 
+        text-transform: uppercase; 
+        background-color: #f9f9f9; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    </div>
+    <div id="chemistry-answers" class="answers"></div>
+    <button class="back" onclick="endChemistryGame()">🔙 Завершить игру</button>
+</div>
+
+    <script>
+// Основные параметры игры
+const gravity = 0.5; // Гравитация
+const lift = -7; // Сила подъёма при прыжке
+const maxVelocity = 10; // Максимальная скорость падения рыбки
+let fishGameUnlocked = false; // Игра изначально заблокирована
+let fish; // Параметры рыбки
+let pipes; // Список препятствий
+let fishGameScore; // Счёт игры
+let isGameOver; // Флаг завершения игры
+let isStarted; // Флаг старта
+let fishGameInterval;
+let gradientPosition; // Для анимации фона
+let frameCount; // Счётчик кадров
+
+// Настройки канваса
+const canvas = document.getElementById("fish-game-canvas");
+const ctx = canvas.getContext("2d");
+
+// Переменная для отслеживания времени между созданием препятствий
+let timeSinceLastPipe = 0;
+const pipeInterval = 100; // Интервал появления препятствий (увеличиваем значение для реже)
+
+// Функция для сброса всех параметров игры
+function resetGameParams() {
+    fish = { x: 100, y: canvas.height / 2, size: 20, velocity: 0, angle: 0 }; // Сброс параметров рыбки
+    pipes = []; // Список препятствий
+    fishGameScore = 0; // Счёт игры
+    isGameOver = false; // Флаг завершения игры
+    isStarted = false; // Флаг старта
+    gradientPosition = 0; // Для анимации фона
+    frameCount = 0; // Счётчик кадров
+    console.clear(); // Очищаем консоль при новом запуске
+    console.log("Игра сброшена: параметры обновлены.");
+}
+
+// Запуск игры
+function startFishGame() {
+    if (!fishGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Рыбка' заблокирована! Купите её в магазине.");
+        return;
+    }
+
+    document.querySelectorAll('.container').forEach(screen => screen.classList.add('hidden'));
+
+    // Показываем экран "Рыбки"
+    const fishGameContainer = document.getElementById('fish-game-container');
+    fishGameContainer.classList.remove('hidden');
+
+    cancelAnimationFrame(fishGameInterval); // Останавливаем предыдущий игровой цикл
+    resetGameParams(); // Сбрасываем параметры
+    showScreen("fish-game"); // Отображаем экран игры
+
+    fishGameInterval = requestAnimationFrame(updateGame); // Запускаем игровой цикл
+    canvas.addEventListener("click", handleJump); // Добавляем управление
+}
+
+// Завершение игры
+function endFishGame() {
+    if (isGameOver) return; // Если игра уже завершена, ничего не делаем
+    isGameOver = true; // Устанавливаем флаг завершения
+
+    cancelAnimationFrame(fishGameInterval); // Останавливаем игровой цикл
+    canvas.removeEventListener("click", handleJump); // Убираем управление
+    alert("Игра окончена!"); // Показ результата
+
+    const fishGameContainer = document.getElementById('fish-game-container');
+    fishGameContainer.classList.add('hidden'); // Скрываем экран игры
+
+    showScreen("game-menu"); // Возвращаемся в главное меню
+}
+
+// Обработка прыжка рыбки
+function handleJump() {
+    if (!isStarted) isStarted = true; // Первый клик запускает игру
+    fish.velocity = lift; // Применяем подъём
+}
+
+// Создание препятствий
+function createPipe() {
+    const gap = 175; // Расстояние между верхним и нижним препятствием
+    const height = Math.random() * (canvas.height - gap - 50) + 25; // Случайная высота
+    pipes.push({
+        x: canvas.width, // Начальная позиция
+        top: height, // Высота верхней части
+        bottom: height + gap, // Начало нижней части
+        width: 50, // Ширина препятствия
+        passed: false, // Для подсчёта очков
+    });
+}
+
+// Отрисовка препятствий
+function drawPipes() {
+    pipes.forEach(pipe => {
+        ctx.fillStyle = "#7f8c8d"; // Основной цвет
+        ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+        ctx.fillRect(pipe.x, pipe.bottom, pipe.width, canvas.height - pipe.bottom);
+
+        pipe.x -= 2; // Движение
+    });
+
+    pipes = pipes.filter(pipe => pipe.x + pipe.width > 0); // Убираем препятствия за пределами экрана
+}
+
+// Проверка столкновений
+function checkCollision() {
+    for (const pipe of pipes) {
+        if (
+            fish.x + fish.size > pipe.x &&
+            fish.x - fish.size < pipe.x + pipe.width &&
+            (fish.y - fish.size < pipe.top || fish.y + fish.size > pipe.bottom)
+        ) {
+            endFishGame(); // Столкновение с препятствием
+        }
+    }
+
+    if (fish.y - fish.size < 0 || fish.y + fish.size > canvas.height) {
+        endFishGame();
+    }
+}
+
+// Плавное изменение угла наклона рыбки
+function updateFishAngle() {
+    const targetAngle = fish.velocity < 0 ? -Math.PI / 6 : Math.PI / 6;
+    fish.angle += (targetAngle - fish.angle) * 0.1; // Плавное изменение угла
+}
+
+// Отрисовка рыбки
+function drawFish() {
+    ctx.save();
+    ctx.translate(fish.x, fish.y);
+    ctx.rotate(fish.angle); // Плавное вращение рыбки
+
+    ctx.scale(-1, 1); // Отражаем по горизонтали, чтобы рыбка смотрела вправо
+    ctx.font = `${fish.size * 2}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("🐟", 0, 0);
+
+    ctx.restore();
+}
+
+// Переливающийся фон
+function drawBackground() {
+    gradientPosition += 0.01; // Скорость перелива
+    if (gradientPosition > 1) gradientPosition = 0;
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, `rgba(135, 206, 250, ${0.5 + 0.5 * Math.sin(gradientPosition)})`);
+    gradient.addColorStop(1, `rgba(25, 25, 112, ${0.5 + 0.5 * Math.cos(gradientPosition)})`);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Основной игровой цикл
+function updateGame() {
+    if (isGameOver) return; // Если игра завершена, не обновляем кадры
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground(); // Отрисовка фона
+
+    if (isStarted) {
+        fish.velocity += gravity; // Применяем гравитацию
+        if (fish.velocity > maxVelocity) fish.velocity = maxVelocity; // Ограничение скорости
+        fish.y += fish.velocity; // Двигаем рыбку
+        updateFishAngle(); // Обновляем угол наклона рыбки
+    }
+
+    drawFish(); // Отрисовка рыбки
+
+    if (isStarted && timeSinceLastPipe >= pipeInterval) {
+        createPipe(); // Создаём новое препятствие
+        timeSinceLastPipe = 0; // Сбрасываем время до следующего препятствия
+    }
+
+    if (isStarted) drawPipes(); // Отрисовка препятствий
+    if (isStarted) checkCollision(); // Проверка столкновений
+
+    pipes.forEach(pipe => {
+        if (!isGameOver && pipe.x + pipe.width < fish.x && !pipe.passed) {
+            pipe.passed = true;
+            gameProgress.fishPassedPipes++; 
+            balance += 5;
+            const progressToAdd = 5;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+            updateProfile();
+            checkArtifactUnlocks();
+            renderArtifacts();
+        }
+    });
+
+    timeSinceLastPipe++;
+    frameCount++;
+    fishGameInterval = requestAnimationFrame(updateGame); // Следующий кадр
+}
+
+    let favoriteArtifact = null; // Текущий избранный артефакт
+    let hasInteracted = false; // Переменная для отслеживания действий
+
+    const artifacts = [
+    { id: 1, name: "📖 Математик", description: "Ответить на 100 вопросов в игре 'Математика'", unlocked: false },
+    { id: 2, name: "🍎 Фермер", description: "Найти 120 пар в игре 'Запоминалка'", unlocked: false },
+    { id: 3, name: "🗽 Англичанин", description: "Ответить на 100 вопросов в игре 'Английский'", unlocked: false },
+    { id: 4, name: "🌼 Цветик", description: "Ответить на 50 вопросов в игре 'Цветы'", unlocked: false },
+    { id: 5, name: "💡 Химик", description: "Ответить на 100 вопросов в игре 'Химия'", unlocked: false },
+    { id: 6, name: "🎵 Музыкант", description: "Сыграть 20 нот за один заход в игре 'Музыка'", unlocked: false },
+    { id: 7, name: "🌍 Географ", description: "Ответить на 100 вопросов в игре 'Страны'", unlocked: false },
+    { id: 8, name: "🍬 Щедрый", description: "Создать 10 промокодов", unlocked: false },
+    { id: 9, name: "⭐ Конструктивно", description: "Оценить игру 1 раз на любое количество звезд", unlocked: false },
+    { id: 10, name: "🔍 Сыщик", description: "Найти 100 эмодзи в игре 'Находка'", unlocked: false },
+    { id: 11, name: "💤 Соня", description: "Ничего не делать до окончания времени", unlocked: false },
+    { id: 12, name: "❤️ Новичок", description: "Достигнуть статус 'Бронза'", unlocked: false },
+    { id: 13, name: "🩷 Профессионал", description: "Достигнуть статус 'Серебро'", unlocked: false },
+    { id: 14, name: "💛 Gold-Player", description: "Достигнуть статус 'Золото'", unlocked: false },
+    { id: 15, name: "🩵 Алмаз", description: "Достигнуть статус 'Алмаз'", unlocked: false },
+    { id: 16, name: "💖 Сверхъестественный", description: "Достигнуть статус 'Мифический'", unlocked: false },
+    { id: 17, name: "🔥 Легенда", description: "Достигнуть статус 'Легендарный'", unlocked: false },
+    { id: 18, name: "👑 Мастер", description: "Достигнуть статус 'Мастер'", unlocked: false },
+    { id: 19, name: "🪩 Император", description: "Достигнуть статус 'Император'", unlocked: false },
+    { id: 20, name: "🖤 Титан", description: "Достигнуть статус 'Титан'", unlocked: false },
+    { id: 21, name: "🏆 Король игр", description: "Разблокировать все игры", unlocked: false },
+    { id: 22, name: "🐍 Змееносец", description: "Собрать 100 яблок в игре 'Змейка'", unlocked: false },
+    { id: 23, name: "💼 Босс", description: "Можно купить в магазине за 1000$", unlocked: false }, // Новый артефакт
+    { id: 24, name: "🐟 Рыбы", description: "Пройти 100 препятствий в игре 'Рыбка'", unlocked: false },
+    { id: 25, name: "🎰 Везунчик", description: "Можно выиграть в рулетке", unlocked: false }
+];
+
+function checkUnlockKingOfGamesArtifact() {
+    if (
+        memoryGameUnlocked &&
+        englishGameUnlocked &&
+        countriesGameUnlocked &&
+        findDifferenceUnlocked &&
+        flowersGameUnlocked &&
+        musicGameUnlocked &&
+        chemistryGameUnlocked &&
+        snakeGameUnlocked &&
+        fishGameUnlocked
+    ) {
+        unlockArtifact(21); // Разблокируем артефакт "Король игр"
+    }
+}
+
+function renderArtifacts() {
+    const container = document.getElementById("artifacts-container");
+    container.innerHTML = ""; // Очистка контейнера
+
+    artifacts.forEach(artifact => {
+        const card = document.createElement("div");
+        card.className = "artifact-card" + (artifact.unlocked ? " open" : ""); // Добавляем класс "open", если артефакт открыт
+        card.style.position = "relative"; // Для правильного позиционирования звезды
+
+        // Содержимое карточки
+        card.innerHTML = artifact.unlocked
+            ? `
+                <span class="favorite-star ${favoriteArtifact === artifact.id ? 'active' : ''}" 
+                      onclick="toggleFavorite(${artifact.id}); event.stopPropagation();">
+                    ${favoriteArtifact === artifact.id ? '★' : '☆'}
+                </span>
+                ${artifact.name.split(" ")[0]}
+              `
+            : "?"; // Показываем "?" для закрытых карточек
+
+        // Обработчик клика на карточку (кроме звезды)
+        card.onclick = () => {
+            if (artifact.unlocked) {
+                alert(`${artifact.name}\n${artifact.description}`); // Показываем имя и описание
+            } else {
+                alert("Закрыто!");
+            }
+        };
+
+        // Добавляем карточку в контейнер
+        container.appendChild(card);
+    });
+}
+
+    const gameProgress = {
+    mathQuestions: 0,       // Количество решённых вопросов в игре "Математика"
+    memoryPairs: 0,         // Количество найденных пар в игре "Запоминалка"
+    englishQuestions: 0,    // Количество решённых вопросов в игре "Английский"
+    flowerQuestions: 0,     // Количество решённых вопросов в игре "Цветы"
+    chemistryQuestions: 0,  // Количество решённых вопросов в игре "Химия"
+    musicNotes: 0,          // Количество сыгранных нот за один заход в "Музыке"
+    countryQuestions: 0,    // Количество решённых вопросов в игре "Страны"
+    findDifferenceCount: 0, // Количество найденных эмодзи
+    promoCodesCreated: 0,       // Количество раз, когда создали промокод
+    snakeApples: 0,         // Количество съеденных яблок
+    fishPassedPipes: 0,     // Количество пройденных препятствий в игре "Рыбка"
+    rated: false,           // Поставили ли оценку
+};
+
+function checkArtifactUnlocks() {
+    // Игровые условия
+    if (gameProgress.mathQuestions >= 100) unlockArtifact(1); // 📖 Математик
+    if (gameProgress.memoryPairs >= 120) unlockArtifact(2);  // 🍎 Фермер
+    if (gameProgress.englishQuestions >= 100) unlockArtifact(3); // 🗽 Англичанин
+    if (gameProgress.flowerQuestions >= 50) unlockArtifact(4); // 🌼 Цветик
+    if (gameProgress.chemistryQuestions >= 100) unlockArtifact(5); // 💡 Химик
+    if (gameProgress.musicNotes >= 20) unlockArtifact(6); // 🎵 Музыкант
+    if (gameProgress.countryQuestions >= 100) unlockArtifact(7); // 🌍 Географ
+    if (saveLoadCount >= 10) unlockArtifact(8); // 📂 Загружено
+    if (gameProgress.rated) unlockArtifact(9); // ⭐ Конструктивно
+    if (gameProgress.findDifferenceCount >= 100) unlockArtifact(10); // 🔍 Сыщик
+    if (gameProgress.fishPassedPipes >= 100) unlockArtifact(24); // 🐟 Рыбы
+
+    // Артефакт "💤 Соня"
+    if (checkIfIdle() && !gameProgress.rated) unlockArtifact(11);
+
+    // Статусные артефакты
+    const statuses = getStatusesForPlayer();
+    statuses.forEach(status => unlockArtifact(status.id)); // Выдаём артефакты за все пройденные статусы
+}
+
+function checkIfIdle() {
+    return gameProgress.mathQuestions === 0 &&
+           gameProgress.memoryPairs === 0 &&
+           gameProgress.englishQuestions === 0 &&
+           gameProgress.flowerQuestions === 0 &&
+           gameProgress.chemistryQuestions === 0 &&
+           gameProgress.findDifferenceCount === 0; // Ни одного действия
+}
+
+function getStatusesForPlayer() {
+    const statuses = [
+        { id: 12, name: "Бронза ❤️", threshold: 500 },
+        { id: 13, name: "Серебро 🩷", threshold: 1000 },
+        { id: 14, name: "Золото 💛", threshold: 2000 },
+        { id: 15, name: "Алмаз 🩵", threshold: 5000 },
+        { id: 16, name: "Мифический 💖", threshold: 10000 },
+        { id: 17, name: "Легендарный 🔥", threshold: 50000 },
+        { id: 18, name: "Мастер 👑", threshold: 100000 },
+        { id: 19, name: "Император 🪩", threshold: 500000 },
+        { id: 20, name: "Титан 🖤", threshold: 1000000 }
+    ];
+
+    return statuses.filter(status => progress >= status.threshold); // Возвращаем статусы, которые игрок уже достиг
+}
+function getCurrentStatus() {
+    const statuses = [
+        { name: "Камень 🩶", next: 500 },
+        { name: "Бронза ❤️", next: 1000 },
+        { name: "Серебро 🩷", next: 2000 },
+        { name: "Золото 💛", next: 5000 },
+        { name: "Алмаз 🩵", next: 10000 },
+        { name: "Мифический 💖", next: 50000 },
+        { name: "Легендарный 🔥", next: 100000 },
+        { name: "Мастер 👑", next: 500000 },
+        { name: "Император 🪩", next: 1000000 },
+        { name: "Титан 🖤", next: Infinity }
+    ];
+
+    return statuses.find(s => progress < s.next)?.name || statuses[statuses.length - 1].name;
+}
+
+function unlockArtifact(id) {
+    console.log(`Пытаемся разблокировать артефакт с ID: ${id}`);
+    const artifact = artifacts.find(a => a.id === id);
+    if (artifact && !artifact.unlocked) {
+        artifact.unlocked = true;
+        console.log(`Артефакт ${artifact.name} разблокирован!`);
+        alert(`Вы разблокировали артефакт: ${artifact.name}!\n${artifact.description}`);
+        renderArtifacts();
+    } else {
+        console.log(`Ошибка: Артефакт с ID ${id} не найден или уже разблокирован.`);
+    }
+}
+
+
+window.onload = function() {
+    const savedAvatar = localStorage.getItem('avatar'); // Проверяем сохранённую аватарку
+    const avatarElement = document.getElementById('avatar');
+    const placeholderElement = document.getElementById('avatar-placeholder');
+
+    if (savedAvatar) {
+        avatarElement.src = savedAvatar; // Показываем сохранённую аватарку
+        placeholderElement.style.display = "none"; // Убираем текст
+    } else {
+        avatarElement.src = ""; // Убираем картинку
+        placeholderElement.style.display = "block"; // Показываем текст
+    }
+};
+
+function initializeGame() {
+    updateProfile();
+    toggleGameButtons();
+}
+
+    let musicGameUnlocked = false; // Игра изначально заблокирована
+    let chemistryGameUnlocked = false; // Добавьте это в начало скрипта
+let musicSequence = [];
+let playerSequence = [];
+let isPlayingSequence = false; // Блокирует кнопки во время воспроизведения
+const musicNotes = {
+    low: 261.25,   // Низкая нота (С3)
+    mid: 523.25,   // Средняя нота (С4)
+    high: 793.25,  // Высокая нота (С5)
+};
+
+function startMusicGame() {
+    if (!musicGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Музыка' заблокирована! Купите её в магазине.");
+        return;
+    }
+
+    setTimeout(() => {
+        startNewRound(); // Начинаем игру через 2 секунды
+    }, 2000);
+
+    document.getElementById("music-prompt").textContent = "Приготовьтесь...";
+    updateButtonState(true); // Делаем кнопки серыми
+    showScreen('music-game');
+}
+
+function startNewRound() {
+    playerSequence = [];
+    musicSequence.push(getRandomNote()); // Добавляем новую ноту в последовательность
+    document.getElementById("music-prompt").textContent = "Слушайте мелодию...";
+    playSequence();
+}
+
+function playSequence() {
+    isPlayingSequence = true;
+    updateButtonState(true); // Делаем кнопки серыми
+    let delay = 0;
+
+    musicSequence.forEach((note, index) => {
+        setTimeout(() => {
+            playSound(note);
+        }, delay);
+        delay += 600; // Задержка между нотами
+    });
+
+    setTimeout(() => {
+        isPlayingSequence = false;
+        updateButtonState(false); // Возвращаем кнопки в нормальное состояние
+        document.getElementById("music-prompt").textContent = "Повторите мелодию!";
+    }, delay);
+}
+
+function playMusicButton(note) {
+    if (isPlayingSequence) return;
+
+    playSound(note);
+    playerSequence.push(note);
+
+    if (playerSequence.length === musicSequence.length) {
+        checkSequence();
+    }
+}
+
+function checkSequence() {
+    if (playerSequence.join('') === musicSequence.join('')) {
+        balance += 10;
+        const progressToAdd = 10;
+        const multiplierUsed = Math.min(multipliers, progressToAdd);
+        progress += progressToAdd + multiplierUsed;
+        multipliers -= multiplierUsed;
+        gameProgress.musicNotes++;
+        checkArtifactUnlocks();
+        updateMultipliers();
+        updateProfile();
+
+        setTimeout(() => {
+            alert("+10 БАЛЛОВ!");
+            startNewRound();
+        }, 500);
+    } else {
+        playErrorSound();
+        alert("Неправильно! Игра окончена.");
+        endMusicGame();
+    }
+}
+
+function endMusicGame() {
+    musicSequence = [];
+    playerSequence = [];
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen('main-menu');
+}
+
+function playSound(note) {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.type = note === 'low' ? 'square' : note === 'mid' ? 'sine' : 'triangle'; // Грубый, мягкий, яркий звук
+    oscillator.frequency.setValueAtTime(musicNotes[note], audioContext.currentTime); // Частота ноты
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    gainNode.gain.setValueAtTime(1.0, audioContext.currentTime); // Громкость
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.6); // Плавное затухание
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.6); // Длительность 0.6 секунд
+}
+
+function getRandomNote() {
+    const notes = Object.keys(musicNotes);
+    return notes[Math.floor(Math.random() * notes.length)];
+}
+
+function updateButtonState(disabled) {
+    const buttons = document.querySelectorAll("#music-buttons button");
+    buttons.forEach(button => {
+        button.disabled = disabled;
+        button.style.backgroundColor = disabled ? "#ccc" : ""; // Серый цвет, если кнопки отключены
+        button.style.cursor = disabled ? "not-allowed" : "pointer"; // Курсор "запрещено"
+    });
+}
+
+    let findDifferenceUnlocked = false;
+    let gameTimers = {}; // Хранит все активные таймеры
+    let soundEnabled = JSON.parse(localStorage.getItem("soundEnabled")) ?? true;  // true по умолчанию
+const expirationTime = 120000; // 2 минут (в миллисекундах)
+let usedQRCodes = JSON.parse(localStorage.getItem("usedQRCodes")) || {};  // Список активированных QR
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeGame();
+});
+
+// Функция выбора аватарки
+function selectAvatar() {
+    document.getElementById('avatar-input').click();  // Открываем выбор файла
+}
+
+// Функция обновления аватарки
+function updateAvatar(event) {
+    const file = event.target.files[0]; // Получаем файл
+
+    if (!file) {
+        console.log("Файл для аватарки не выбран.");
+        return;
+    }
+
+    // Проверяем размер файла (в байтах, 2 МБ = 2 * 1024 * 1024)
+    const maxFileSize = 2 * 1024 * 1024; // 2 МБ
+    if (file.size > maxFileSize) {
+        alert("Ошибка: Размер файла превышает 2 МБ. Пожалуйста, выберите другой файл.");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const avatarImg = document.getElementById('avatar');
+        avatarImg.src = e.target.result; // Устанавливаем выбранное изображение
+        localStorage.setItem('avatar', e.target.result); // Сохраняем в localStorage
+        console.log("Аватарка обновлена и сохранена.");
+    };
+
+    reader.readAsDataURL(file); // Читаем файл как Data URL
+}
+
+// Проверяем наличие сохранённой аватарки при загрузке страницы
+window.onload = function() {
+    const savedAvatar = localStorage.getItem('avatar');
+    if (savedAvatar) {
+        document.getElementById('avatar').src = savedAvatar;
+    }
+};
+
+// Эмодзи настроек ⚙️
+document.getElementById("settings-icon").onclick = () => showScreen("settings-menu");
+
+//Получение Подарка
+function activateGiftPromo() {
+    const promoId = document.getElementById("gift-code").value.trim();
+    console.log("Введённый промокод:", promoId);
+
+    if (!promoId || promoId === "") {
+        alert("Введите промокод!");
+        return;
+    }
+
+    // Объявляем usedPromoCodes глобально или в начале функции
+    let usedPromoCodes = JSON.parse(localStorage.getItem("usedPromoCodes")) || {};
+    if (usedPromoCodes[promoId]) {
+        alert("Этот промокод уже был активирован.");
+        return;
+    }
+
+    const botToken = "7888258193:AAH_GCsOOZ64BznEToOKd6t0miKxR60lYNA";
+    const groupId = "-1002272656448";
+
+    fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+        .then(response => {
+            console.log("Ответ от Telegram API получен:", response);
+            return response.json();
+        })
+        .then(data => {
+            console.log("Данные из Telegram API:", data);
+
+            if (!data.result || data.result.length === 0) {
+                alert("Ошибка: Сообщения в группе отсутствуют.");
+                return;
+            }
+
+            const messages = data.result;
+            let latestPromo = null;
+
+            for (let i = messages.length - 1; i >= 0; i--) {
+                const message = messages[i].message;
+                if (!message || message.chat.id !== parseInt(groupId) || !message.text) continue;
+
+                try {
+                    console.log("Пытаемся распарсить сообщение:", message.text);
+                    const promo = JSON.parse(message.text);
+                    if (promo.id === promoId) {
+                        latestPromo = promo;
+                        break;
+                    }
+                } catch (e) {
+                    console.error("Ошибка парсинга JSON:", e, message.text);
+                    continue;
+                }
+            }
+
+            console.log("Последний промокод:", latestPromo);
+
+            if (!latestPromo) {
+                console.error("Не найден подходящий промокод. Данные:", { promoId, messages });
+                alert("Промокод не найден.");
+                return;
+            }
+
+            if (latestPromo.used) {
+                alert("Этот промокод уже был активирован.");
+                return;
+            }
+
+            // Активируем промокод
+            try {
+    balance += latestPromo.points;
+    console.log(`Баланс обновлён: ${balance}`);
+
+    console.log("Шаг 1: обновляем промокоды");
+    usedPromoCodes[promoId] = true;
+    console.log("usedPromoCodes:", usedPromoCodes);
+
+    console.log("Шаг 2: сохраняем в localStorage");
+    localStorage.setItem("usedPromoCodes", JSON.stringify(usedPromoCodes));
+
+    console.log("Шаг 3: обновляем профиль");
+    updateProfile();
+
+    console.log("Шаг 4: сохраняем прогресс");
+    saveProgress();
+
+    console.log("Шаг 5: публикуем 'true'");
+    publishPromoAsUsed(promoId, latestPromo.points);
+
+    alert(`Промокод успешно активирован! Вы получили ${latestPromo.points} баллов.`);
+} catch (e) {
+    console.error("Ошибка активации промокода:", e);
+    alert("Ошибка при активации промокода.");
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка при обработке промокода:", error);
+            alert("Ошибка сети или некорректные данные.");
+        });
+}
+
+// Функция копирования в буфер обмена
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
+        .then(() => console.log("Скопировано в буфер обмена: " + text))
+        .catch(err => console.error("Ошибка копирования в буфер обмена:", err));
+}
+
+//Отправка Подарка
+function sendGiftPromo() {
+    const points = parseInt(document.getElementById("gift-points").value, 10);
+    if (!points || points <= 0) {
+        alert("Введите корректное количество баллов!");
+        return;
+    }
+
+    if (points > balance) {
+        alert("Недостаточно баллов на балансе!");
+        return;
+    }
+
+    const promoId = `GIFT_${Date.now()}`; // Уникальный идентификатор промокода
+    const promoData = { id: promoId, points: points, used: false }; // Создаём промокод с "false"
+
+    const botToken = "7888258193:AAH_GCsOOZ64BznEToOKd6t0miKxR60lYNA"; // Токен публикующего бота
+    const chatId = "-1002479408696"; // ID канала
+
+    // ⚠️ Важно! Баланс теперь списывается ТОЛЬКО при успешной отправке
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: JSON.stringify(promoData)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            // Списываем баллы только после успеха
+            balance -= points;
+            gameProgress.promoCodesCreated++; // Увеличиваем счётчик промокодов
+            console.log(`Создано промокодов: ${gameProgress.promoCodesCreated}`);
+            checkArtifactUnlocks();
+            updateProfile();
+            saveProgress();
+            copyToClipboard(promoId); // Копируем только ID промокода
+            document.getElementById("gift-result").textContent = `Промокод ${promoId} успешно создан и отправлен!`;
+        } else {
+            throw new Error("Ошибка при отправке промокода.");
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка сети при отправке промокода:", error);
+        alert("Ошибка сети при отправке промокода. Баллы возвращены на баланс.");
+        // Возвращаем баллы при ошибке
+        updateProfile();
+    });
+}
+
+function publishPromoAsUsed(promoId, points) {
+    console.log("Параметры для публикации:", promoId, points);
+
+    const botToken = "7165256211:AAEU4j9x9pGxdPeXkBoBV7A08myCtoOM-ZE"; // Токен Третьего бота
+    const chatId = "-1002479408696"; // ID канала
+
+    if (!promoId || !points) {
+        console.error("Ошибка: promoId или points отсутствуют!", { promoId, points });
+        throw new ReferenceError("promoId или points не определены");
+    }
+
+    const promoData = { id: promoId, points: points, used: true };
+    console.log("Отправляем запрос с данными:", {
+        chat_id: chatId,
+        text: JSON.stringify(promoData)
+    });
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: JSON.stringify(promoData)
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            console.log(`Промокод ${promoId} опубликован с "true".`);
+        } else {
+            alert("Ошибка при публикации 'true'.");
+            console.error(data);
+        }
+    })
+    .catch(error => {
+        alert("Ошибка сети при публикации 'true'.");
+        console.error(error);
+    });
+}
+
+// Открытие меню Имп/Экс
+function showImportExport() {
+    showScreen("import-export-menu");
+}
+
+// Переключение звука
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem("soundEnabled", JSON.stringify(soundEnabled));
+    alert(soundEnabled ? "🔊 Звук включён" : "🔇 Звук выключен");
+}
+
+// Генерация QR с уникальным ID и временем
+function exportData() {
+    const botToken = "7888258193:AAH_GCsOOZ64BznEToOKd6t0miKxR60lYNA";
+    const chatId = "-1002479408696";
+
+    // Генерация API-ключа
+    const apiKey = `API_${Math.floor(1000000 + Math.random() * 9000000)}`;
+
+    // Упрощённые данные артефактов
+    const artifactsData = {};
+    artifacts.forEach(artifact => {
+        artifactsData[artifact.id] = artifact.unlocked;
+    });
+
+    // Данные для экспорта
+    const data = {
+        apiKey: apiKey,
+        nickname: nickname || "Игрок",
+        balance: balance || 0,
+        progress: progress || 0,
+        multipliers: multipliers || 0,
+        unlockedGames: {
+            memoryGame: !!memoryGameUnlocked,
+            englishGame: !!englishGameUnlocked,
+            countriesGame: !!countriesGameUnlocked,
+            findDifferenceGame: !!findDifferenceUnlocked,
+            flowersGame: !!flowersGameUnlocked,
+            musicGame: !!musicGameUnlocked,
+            chemistryGame: !!chemistryGameUnlocked,
+            snakeGame: !!snakeGameUnlocked,
+            fishGame: !!fishGameUnlocked // Добавляем статус "Рыбка"
+        },
+        favoriteArtifact: favoriteArtifact || null, // Сохраняем любимый артефакт
+        gameProgress: gameProgress, // Полный прогресс по играм
+        artifacts: artifactsData, // Укороченный формат артефактов
+        lastUsed: false
+    };
+
+    // Логируем данные перед отправкой
+    console.log("Экспортируемые данные:", data);
+
+    // Отправка данных в Telegram
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: JSON.stringify(data),
+        }),
+    })
+        .then(response => response.json())
+        .then(res => {
+            if (res.ok) {
+                alert(`Данные успешно экспортированы! Ваш API-ключ: ${apiKey}`);
+                copyToClipboard(apiKey);
+            } else {
+                alert("Ошибка при экспорте данных.");
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка при экспорте:", err);
+        });
+}
+
+function promptImport() {
+    const apiKey = prompt("Введите API-ключ для импорта:");
+    if (apiKey) {
+        importData(apiKey);
+    } else {
+        alert("Импорт отменён. API-ключ не введён.");
+    }
+}
+
+function importData(apiKey) {
+    const botToken = "7888258193:AAH_GCsOOZ64BznEToOKd6t0miKxR60lYNA";
+    const groupId = "-1002272656448";
+
+    fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.result || data.result.length === 0) {
+                alert("Ошибка: Сообщения в группе отсутствуют.");
+                return;
+            }
+
+            const messages = data.result;
+            let importedData = null;
+
+            for (let i = messages.length - 1; i >= 0; i--) {
+                const message = messages[i].message;
+                if (!message || message.chat.id != groupId || !message.text) continue;
+
+                try {
+                    const jsonData = JSON.parse(message.text);
+                    if (jsonData.apiKey === apiKey) {
+                        importedData = jsonData;
+                        break;
+                    }
+                } catch (e) {
+                    console.error("Ошибка при парсинге сообщения:", e);
+                    continue;
+                }
+            }
+
+            if (!importedData) {
+                alert("Данные с указанным API-ключом не найдены.");
+                return;
+            }
+
+            if (importedData.lastUsed) {
+                alert("Эти данные уже были использованы. Импорт невозможен.");
+                return;
+            }
+
+            // Импортируем данные
+            balance = importedData.balance || 0;
+            progress = importedData.progress || 0;
+            multipliers = importedData.multipliers || 0;
+            memoryGameUnlocked = !!importedData.unlockedGames.memoryGame;
+            englishGameUnlocked = !!importedData.unlockedGames.englishGame;
+            countriesGameUnlocked = !!importedData.unlockedGames.countriesGame;
+            findDifferenceUnlocked = !!importedData.unlockedGames.findDifferenceGame;
+            flowersGameUnlocked = !!importedData.unlockedGames.flowersGame;
+            musicGameUnlocked = !!importedData.unlockedGames.musicGame;
+            chemistryGameUnlocked = !!importedData.unlockedGames.chemistryGame;
+            snakeGameUnlocked = !!importedData.unlockedGames.snakeGame;
+            fishGameUnlocked = !!importedData.unlockedGames.fishGame; // Восстанавливаем статус "Рыбка"
+            favoriteArtifact = importedData.favoriteArtifact || null; // Восстанавливаем любимый артефакт
+            nickname = importedData.nickname || "Игрок"; // Восстанавливаем имя игрока
+
+            // Восстанавливаем прогресс по играм
+            if (importedData.gameProgress) {
+                Object.assign(gameProgress, importedData.gameProgress);
+            }
+
+            // Восстанавливаем состояние артефактов
+            if (importedData.artifacts) {
+                Object.keys(importedData.artifacts).forEach(id => {
+                    const artifact = artifacts.find(a => a.id === parseInt(id));
+                    if (artifact) {
+                        artifact.unlocked = importedData.artifacts[id];
+                    }
+                });
+            }
+
+            // Обновляем интерфейс
+            updateProfile(); // Обновляем общий профиль
+            updateProfileFavorite(); // Обновляем любимый артефакт
+            document.getElementById("nickname-display").textContent = nickname; // Обновляем имя в профиле
+            toggleGameButtons(); // Переключаем кнопки доступных игр
+            updateMultipliers(); // Обновляем множители
+            updateMusicGameButton(); // Обновляем состояние кнопки игры "Музыка"
+            updateGameChemistryButton(); // Обновляем состояние кнопки игры "Химия"
+            updateSnakeGameButton(); // Обновляем состояние кнопки игры "Змейка"
+            updateFishGameButton(); // Обновляем состояние кнопки игры "Рыбка"
+
+            alert("Данные успешно импортированы!");
+            markAsUsed(apiKey, importedData);
+        })
+        .catch(error => {
+            console.error("Ошибка при импорте данных:", error);
+            alert("Ошибка сети или некорректные данные.");
+        });
+}
+
+function markAsUsed(apiKey, importedData) {
+    const botToken = "7165256211:AAEU4j9x9pGxdPeXkBoBV7A08myCtoOM-ZE"; // Бот за "true"
+    const chatId = "-1002479408696"; // ID канала
+
+    const updatedData = { ...importedData, lastUsed: true }; // Обновляем статус
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: JSON.stringify(updatedData),
+        }),
+    })
+        .then(response => response.json())
+        .then(res => {
+            if (res.ok) {
+                console.log(`Данные с API-ключом ${apiKey} помечены как "true".`);
+            } else {
+                alert("Ошибка при пометке данных как 'true'.");
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка при пометке данных:", err);
+        });
+}
+
+    function resetTimer() {
+    document.getElementById("math-timer").textContent = 10; // Сброс для игры "Математика"
+    document.getElementById("memory-timer").textContent = 60; // Сброс для игры "Запоминалка"
+    document.getElementById("english-timer").textContent = 10; // Сброс для игры "Английский"
+    document.getElementById("countries-timer").textContent = 15; // Сброс для игры "Страны"
+}
+
+    let selectedStars = 0;
+
+// Подсветка звёзд при наведении
+document.getElementById("star-rating").addEventListener("mouseover", (e) => {
+    if (e.target.tagName === "SPAN") {
+        highlightStars(e.target.getAttribute("data-stars"));
+    }
+});
+
+// Убираем подсветку, если ничего не выбрано
+document.getElementById("star-rating").addEventListener("mouseout", () => {
+    highlightStars(selectedStars);
+});
+
+// Устанавливаем выбранную оценку
+document.getElementById("star-rating").addEventListener("click", (e) => {
+    if (e.target.tagName === "SPAN") {
+        selectedStars = e.target.getAttribute("data-stars");
+        highlightStars(selectedStars);
+    }
+});
+
+// Подсветка выбранных звёзд
+function highlightStars(stars) {
+    const allStars = document.querySelectorAll("#star-rating span");
+    allStars.forEach((star, index) => {
+        if (index < stars) {
+            star.textContent = "★";
+        } else {
+            star.textContent = "☆";
+        }
+    });
+}
+
+// Отправка рейтинга в Telegram
+function submitRating() {
+    const allStars = document.querySelectorAll("#star-rating span");
+    const selectedStars = Array.from(allStars).filter(star => star.textContent === "★").length;
+
+    if (selectedStars === 0) {
+        alert("Пожалуйста, выберите оценку!");
+        return;
+    }
+
+    const token = "7722889358:AAF13BUUXHYJQNiJejniRjFnHVbAwDjteVE";
+    const chatId = "5666282083"; // Ваш chat_id
+    const comment = document.getElementById("user-comment").value.trim(); // Получаем комментарий пользователя
+
+    let message = `Пользователь "${nickname}" поставил ${selectedStars} ⭐.`;
+    if (comment) {
+        message += `\nКомментарий: "${comment}"`; // Добавляем комментарий, если он есть
+    }
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: message
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            gameProgress.rated = true; // Устанавливаем флаг, что игра была оценена
+            unlockArtifact(9); // Разблокируем артефакт "Конструктивно"
+            playSaveSuccessSound();
+            alert("Спасибо за ваш отзыв!");
+            document.getElementById("user-comment").value = ""; // Очищаем поле комментария
+            showScreen("main-menu");
+        } else {
+            playErrorSound();
+            alert("Ошибка при отправке отзыва. Попробуйте позже.");
+        }
+    })
+    .catch(error => {
+        playErrorSound();
+        console.error("Ошибка:", error);
+        alert("Ошибка сети. Попробуйте позже.");
+    });
+}
+
+// Проверка и разблокировка артефактов
+function checkArtifactUnlocks() {
+    if (gameProgress.mathQuestions >= 100) unlockArtifact(1); // 📖 Математик
+    if (gameProgress.memoryPairs >= 120) unlockArtifact(2);  // 🍎 Фермер
+    if (gameProgress.englishQuestions >= 100) unlockArtifact(3); // 🗽 Англичанин
+    if (gameProgress.flowerQuestions >= 50) unlockArtifact(4); // 🌼 Цветик
+    if (gameProgress.chemistryQuestions >= 100) unlockArtifact(5); // 💡 Химик
+    if (gameProgress.musicNotes >= 20) unlockArtifact(6); // 🎵 Музыкант
+    if (gameProgress.countryQuestions >= 100) unlockArtifact(7); // 🌍 Географ
+    if (gameProgress.promoCodesCreated >= 10) unlockArtifact(8); // 🍬 Щедрый
+    if (gameProgress.findDifferenceCount >= 100) unlockArtifact(10); // 🔍 Сыщик
+    if (gameProgress.fishPassedPipes >= 100) unlockArtifact(24); // 🐟 Рыбы
+
+    // Артефакт "💤 Соня" разблокируется только если игрок ничего не делал и не оценивал игру
+    if (checkIfIdle() && !gameProgress.rated) unlockArtifact(11);
+
+    // Проверка статусов игрока
+    const statuses = getStatusesForPlayer();
+    statuses.forEach(status => unlockArtifact(status.id)); // Разблокируем артефакты за все пройденные статусы
+}
+
+function checkIfIdle() {
+    return gameProgress.idleTime; // Проверка на бездействие
+}
+
+         // Инициализация AudioContext
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    //Ошибка
+    function playErrorSound() {
+    const frequencies = [110, 220]; // Первая грубая нота (110 Гц) и вторая чуть выше (220 Гц)
+    const startTime = audioContext.currentTime;
+
+    frequencies.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = "square"; // Грубый тип волны
+        oscillator.frequency.setValueAtTime(frequency, startTime + index * 0.2); // Задержка между нотами
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        gainNode.gain.setValueAtTime(0.5, startTime + index * 0.2); // Громкость
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + index * 0.2 + 0.3); // Плавное затухание
+
+        oscillator.start(startTime + index * 0.2);
+        oscillator.stop(startTime + index * 0.2 + 0.3); // Каждая нота длится 300 мс
+    });
+}
+
+    // Функция воспроизведения звука
+    function playSaveSuccessSound() {
+    const frequencies = [880, 1760]; // Первая высокая нота (880 Гц) и вторая еще выше (1760 Гц)
+    const startTime = audioContext.currentTime;
+
+    frequencies.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = "sine"; // Тип волны
+        oscillator.frequency.setValueAtTime(frequency, startTime + index * 0.1); // Задержка между нотами
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        gainNode.gain.setValueAtTime(0.5, startTime + index * 0.1); // Громкость
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + index * 0.1 + 0.2); // Плавное затухание
+
+        oscillator.start(startTime + index * 0.1);
+        oscillator.stop(startTime + index * 0.1 + 0.2); // Каждая нота длится 200 мс
+    });
+}
+
+    // Генерация уникального тега
+function generateTag() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const randomLetters = Array(3).fill().map(() => letters[Math.floor(Math.random() * letters.length)]).join("");
+    const randomNumbers = Math.floor(Math.random() * 100).toString().padStart(2, "0");
+    return `#${randomLetters}${randomNumbers}`;
+}
+
+// Инициализация тега
+let playerTag = localStorage.getItem("playerTag") || generateTag();
+localStorage.setItem("playerTag", playerTag);
+
+// Отображение тега в профиле
+document.getElementById("player-tag").textContent = playerTag;
+
+    function playClickSound() {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = 'sine'; // Тип звука (можно заменить на 'square', 'triangle', 'sawtooth')
+        oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // Частота звука (440 Гц — нота Ля)
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.start();
+        gainNode.gain.setValueAtTime(0.5, audioContext.currentTime); // Громкость
+
+        setTimeout(() => {
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.2);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }, 200); // Длительность звука (200 мс)
+    }
+
+        // Инициализация переменных
+        let balance = 0;
+        let progress = 0;
+        let memoryGameUnlocked = false;
+        let countriesGameUnlocked = false;
+        let nickname = "Игрок"; // Значение по умолчанию
+        // Переменная для отслеживания мультиплиеров
+let multipliers = 0;
+
+// Функция для обновления отображения мультиплиеров
+function updateMultipliers() {
+    document.getElementById("multiplier-count").textContent = multipliers;
+}
+
+// Для консоли: изменение количества мультиплиеров
+function addMultipliers(amount) {
+    multipliers += amount;
+    updateMultipliers();
+}
+
+// Пример: addMultipliers(5); // Добавит 5 мультиплиеров
+
+function startCountriesGame() {
+    hasInteracted = false;
+    if (!countriesGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Страны' заблокирована. Купите её в магазине.");
+        return;
+    }
+
+    // Сбрасываем таймер перед запуском новой игры
+    resetTimer('countries');
+    let countriesTimer = 15;
+    document.getElementById("countries-timer").textContent = countriesTimer;
+
+    // Устанавливаем таймер игры
+    gameTimers.countries = setInterval(() => {
+        countriesTimer--;
+        document.getElementById("countries-timer").textContent = countriesTimer;
+
+        if (countriesTimer <= 0) {
+            clearInterval(gameTimers.countries);
+            alert("Время вышло! Игра окончена.");
+            endCountriesGame();
+        }
+    }, 1000);
+
+    // Генерация нового вопроса
+    function nextQuestion() {
+        const randomCountry = countries[Math.floor(Math.random() * countries.length)];
+        const correctAnswer = randomCountry.name;
+
+        // Генерация вариантов ответа
+        const options = new Set([correctAnswer]);
+        while (options.size < 3) {
+            const randomOption = countries[Math.floor(Math.random() * countries.length)].name;
+            options.add(randomOption);
+        }
+
+        const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
+
+        // Отображение вопроса и ответов
+        document.getElementById("countries-question").innerHTML = `<span style="font-size: 150px;">${randomCountry.flag}</span>`;
+        const answersDiv = document.getElementById("countries-answers");
+        answersDiv.innerHTML = "";
+
+        shuffledOptions.forEach(option => {
+            const btn = document.createElement("button");
+            btn.textContent = option;
+            btn.onclick = () => {
+                if (option === correctAnswer) {
+                    balance += 10;
+const progressToAdd = 10;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.countryQuestions++;
+                    hasInteracted = true
+                    checkArtifactUnlocks();
+                    updateMultipliers();
+                    updateProfile();
+                    nextQuestion(); // Новый вопрос
+                } else {
+                    playErrorSound();
+                    alert("Неправильный ответ! Игра окончена.");
+                    hasInteracted = true;
+                    endCountriesGame();
+                }
+            };
+            answersDiv.appendChild(btn);
+        });
+    }
+
+    // Запускаем первый вопрос
+    nextQuestion();
+    showScreen("countries-game");
+}
+
+function endCountriesGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11); // 💤 Соня
+    }
+    resetTimer('countries'); // Останавливаем таймер
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("game-menu");
+}
+
+// Общая функция сброса таймера
+function resetTimer(game) {
+    if (gameTimers[game]) {
+        clearInterval(gameTimers[game]);
+        gameTimers[game] = null;
+    }
+}
+
+        const statuses = [
+    { name: "Камень 🩶", next: 500 },
+    { name: "Бронза ❤️", next: 1000 },
+    { name: "Серебро 🩷", next: 2000 },
+    { name: "Золото 💛", next: 5000 },
+    { name: "Алмаз 🩵", next: 10000 },
+    { name: "Мифический 💖", next: 50000 },
+    { name: "Легендарный 🔥", next: 100000 },
+    { name: "Мастер 👑", next: 500000 },
+    { name: "Император 🪩", next: 1000000 },
+    { name: "Титан 🖤", next: Infinity } // Заменили null на Infinity
+];
+
+        function updateProfile() {
+    const statusElement = document.getElementById("profile-status-display");
+    const progressTextElement = document.getElementById("progress-text");
+    const progressFillElement = document.getElementById("progress-fill");
+
+    const statusColors = {
+    "Камень 🩶": "linear-gradient(45deg, #A9A9A9, #000000)", // Серая и черная
+    "Бронза ❤️": "linear-gradient(45deg, #CD7F32, #FFA500)", // Бронзовая и оранжевая
+    "Серебро 🩷": "linear-gradient(45deg, #87CEFA, #FFFFFF)", // Бирюзовая и белая
+    "Золото 💛": "linear-gradient(45deg, #FFD700, #FFFFFF)", // Желтая и белая
+    "Алмаз 🩵": "linear-gradient(45deg, #87CEEB, #4682B4)", // Голубая с темными полосами
+    "Мифический 💖": "linear-gradient(45deg, #8B0000, #FF6347)", // Вишневый с полосами
+    "Легендарный 🔥": "linear-gradient(45deg, #FFA500, #FFFF00)", // Оранжевый с желтым
+    "Мастер 👑": "linear-gradient(45deg, #008000, #32CD32)", // Зеленый с полосами
+    "Император 🪩": "linear-gradient(90deg, #87CEFA, #1E90FF)", // Переливающаяся голубая-синяя
+    "Титан 🖤": "linear-gradient(90deg, #000000, #FFFFFF)" // Черно-белая переливающаяся
+};
+
+    // Находим текущий статус
+    const currentStatus = statuses.find(s => progress < s.next) || statuses[statuses.length - 1];
+    const progressPercentage = Math.min((progress / currentStatus.next) * 100, 100);
+    const progressText = `${progress}/${currentStatus.next === Infinity ? "∞" : currentStatus.next}`;
+
+    // Обновляем текстовые данные профиля
+    if (statusElement) {
+        statusElement.textContent = currentStatus.name;
+    }
+    if (progressTextElement) {
+        progressTextElement.textContent = progressText;
+    }
+
+    // Обновляем прогресс-бар
+    if (progressFillElement) {
+        progressFillElement.style.width = `${progressPercentage}%`;
+        const statusColor = statusColors[currentStatus.name];
+        if (statusColor) {
+            progressFillElement.style.background = statusColor;
+        }
+    }
+
+    // Обновляем баланс и мультипликаторы
+    const balanceElement = document.getElementById("balance");
+    const multiplierCountElement = document.getElementById("multiplier-count");
+
+    if (balanceElement) {
+        balanceElement.textContent = balance;
+    }
+    if (multiplierCountElement) {
+        multiplierCountElement.textContent = multipliers;
+    }
+}
+
+        function startMathGame() {
+            hasInteracted = false;
+    resetTimer('math'); // Сброс таймера
+    clearAllTimers();
+    let mathTimer = 10;
+    document.getElementById("math-timer").textContent = mathTimer;
+
+    // Таймер
+    gameTimers.math = setInterval(() => {
+        mathTimer--;
+        document.getElementById("math-timer").textContent = mathTimer;
+
+        if (mathTimer <= 0) {
+            clearInterval(gameTimers.math);
+            alert("Время вышло! Игра окончена.");
+            endMathGame();
+        }
+    }, 1000);
+
+    // Генерация нового вопроса
+    function nextQuestion() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        const correctAnswer = num1 + num2;
+
+        // Варианты ответа
+        const answers = [correctAnswer];
+        while (answers.length < 3) {
+            const randomAnswer = correctAnswer + Math.floor(Math.random() * 10) - 5;
+            if (!answers.includes(randomAnswer)) {
+                answers.push(randomAnswer);
+            }
+        }
+        const shuffledAnswers = answers.sort(() => Math.random() - 0.5);
+
+        // Рендер вопроса и вариантов
+        document.getElementById("math-question").textContent = `${num1} + ${num2}`;
+        const answersDiv = document.getElementById("math-answers");
+        answersDiv.innerHTML = "";
+
+        shuffledAnswers.forEach(answer => {
+            const btn = document.createElement("button");
+            btn.textContent = answer;
+            btn.onclick = () => {
+                if (answer === correctAnswer) {
+                    balance += 10;
+                    const progressToAdd = 10;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.mathQuestions++;
+hasInteracted = true;
+                    checkArtifactUnlocks();
+                    updateMultipliers();
+                    updateProfile(); 
+
+                    nextQuestion(); // Следующий вопрос
+                } else {
+                    playErrorSound();
+                    alert("Неправильный ответ! Игра окончена.");
+                    hasInteracted = true;
+                    endMathGame();
+                }
+            };
+            answersDiv.appendChild(btn);
+        });
+    }
+
+    nextQuestion(); // Запуск первого вопроса
+    showScreen("math-game");
+}
+
+function endMathGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11); // 💤 Соня
+    }
+    clearAllTimers();
+    resetTimer('math'); 
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("math-mode-menu");
+}
+
+// Умножение
+function startMultiplicationGame() {
+    console.log("[Умножение] Игра началась.");
+    hasInteracted = false;
+
+    // Очищаем все таймеры перед запуском
+    clearAllTimers();
+
+    // Сбрасываем таймер
+    resetTimer('multiplication'); 
+    console.log("[Умножение] Таймер сброшен.");
+
+    let multiplicationTimer = 10; // Устанавливаем таймер на 10 секунд
+    document.getElementById("math-timer").textContent = multiplicationTimer;
+
+    // Запускаем новый таймер
+    gameTimers.multiplication = setInterval(() => {
+        multiplicationTimer--;
+        console.log(`[Умножение] Осталось времени: ${multiplicationTimer} сек.`);
+        document.getElementById("math-timer").textContent = multiplicationTimer;
+
+        if (multiplicationTimer <= 0) {
+            console.log("[Умножение] Время вышло.");
+            clearAllTimers(); // Гарантированно очищаем таймеры
+            alert("Время вышло! Игра окончена.");
+            endMultiplicationGame();
+        }
+    }, 1000);
+
+    // Генерация первого вопроса
+    nextMultiplicationQuestion();
+    showScreen("math-game");
+}
+
+function endMultiplicationGame() {
+    console.log("[Умножение] Игра завершена.");
+    clearAllTimers(); // Очищаем таймеры
+    resetTimer('multiplication'); // Сбрасываем состояние
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("math-mode-menu");
+}
+
+function nextMultiplicationQuestion() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const correctAnswer = num1 * num2;
+
+    // Генерация вариантов ответа
+    const answers = new Set([correctAnswer]);
+    while (answers.size < 3) {
+        const randomAnswer = correctAnswer + Math.floor(Math.random() * 10) - 5;
+        if (randomAnswer > 0) answers.add(randomAnswer);
+    }
+    const shuffledAnswers = Array.from(answers).sort(() => Math.random() - 0.5);
+
+    console.log(`[Умножение] Новый вопрос: ${num1} × ${num2}. Правильный ответ: ${correctAnswer}.`);
+
+    // Отображение вопроса и ответов
+    document.getElementById("math-question").textContent = `${num1} × ${num2}`;
+    const answersDiv = document.getElementById("math-answers");
+    answersDiv.innerHTML = "";
+
+    shuffledAnswers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => {
+            if (answer === correctAnswer) {
+                console.log("[Умножение] Ответ правильный.");
+                balance += 10;
+                const progressToAdd = 10;
+                const multiplierUsed = Math.min(multipliers, progressToAdd);
+                progress += progressToAdd + multiplierUsed;
+                multipliers -= multiplierUsed;
+                gameProgress.mathQuestions++;
+                hasInteracted = true;
+                checkArtifactUnlocks();
+                updateMultipliers();
+                updateProfile();
+
+                nextMultiplicationQuestion(); // Следующий вопрос
+            } else {
+                console.log("[Умножение] Ответ неправильный.");
+                playErrorSound();
+                alert("Неправильный ответ! Игра окончена.");
+                hasInteracted = true;
+                endMultiplicationGame();
+            }
+        };
+        answersDiv.appendChild(btn);
+    });
+}
+
+function startDivisionGame() {
+    console.log("[Деление] Игра началась.");
+    hasInteracted = false;
+
+    // Очищаем все таймеры перед запуском
+    clearAllTimers();
+
+    // Сбрасываем таймер
+    resetTimer('division'); 
+    console.log("[Деление] Таймер сброшен.");
+
+    let divisionTimer = 10; // Устанавливаем таймер на 10 секунд
+    document.getElementById("math-timer").textContent = divisionTimer;
+
+    // Запускаем новый таймер
+    gameTimers.division = setInterval(() => {
+        divisionTimer--;
+        console.log(`[Деление] Осталось времени: ${divisionTimer} сек.`);
+        document.getElementById("math-timer").textContent = divisionTimer;
+
+        if (divisionTimer <= 0) {
+            console.log("[Деление] Время вышло.");
+            clearAllTimers(); // Гарантированно очищаем таймеры
+            alert("Время вышло! Игра окончена.");
+            endDivisionGame();
+        }
+    }, 1000);
+
+    // Генерация первого вопроса
+    nextDivisionQuestion();
+    showScreen("math-game");
+}
+
+function endDivisionGame() {
+    console.log("[Деление] Игра завершена.");
+    clearAllTimers(); // Очищаем таймеры
+    resetTimer('division'); // Сбрасываем состояние
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("math-mode-menu");
+}
+
+function nextDivisionQuestion() {
+    const divisor = Math.floor(Math.random() * 9) + 1;
+    const quotient = Math.floor(Math.random() * 10) + 1;
+    const dividend = divisor * quotient;
+    const correctAnswer = quotient;
+
+    // Генерация вариантов ответа
+    const answers = new Set([correctAnswer]);
+    while (answers.size < 3) {
+        const randomAnswer = correctAnswer + Math.floor(Math.random() * 10) - 5;
+        if (randomAnswer > 0) answers.add(randomAnswer);
+    }
+    const shuffledAnswers = Array.from(answers).sort(() => Math.random() - 0.5);
+
+    console.log(`[Деление] Новый вопрос: ${dividend} ÷ ${divisor}. Правильный ответ: ${correctAnswer}.`);
+
+    // Отображение вопроса и ответов
+    document.getElementById("math-question").textContent = `${dividend} ÷ ${divisor}`;
+    const answersDiv = document.getElementById("math-answers");
+    answersDiv.innerHTML = "";
+
+    shuffledAnswers.forEach(answer => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => {
+            if (answer === correctAnswer) {
+                console.log("[Деление] Ответ правильный.");
+                balance += 10;
+                const progressToAdd = 10;
+                const multiplierUsed = Math.min(multipliers, progressToAdd);
+                progress += progressToAdd + multiplierUsed;
+                multipliers -= multiplierUsed;
+                gameProgress.mathQuestions++;
+                hasInteracted = true;
+                checkArtifactUnlocks();
+                updateMultipliers();
+                updateProfile();
+
+                nextDivisionQuestion(); // Следующий вопрос
+            } else {
+                console.log("[Деление] Ответ неправильный.");
+                playErrorSound();
+                alert("Неправильный ответ! Игра окончена.");
+                hasInteracted = true;
+                endDivisionGame();
+            }
+        };
+        answersDiv.appendChild(btn);
+    });
+}
+
+function clearAllTimers() {
+    console.log("[Очистка таймеров] Удаляем все активные таймеры.");
+    Object.keys(gameTimers).forEach(game => {
+        if (gameTimers[game]) {
+            console.log(`[Очистка таймеров] Таймер для игры '${game}' удалён.`);
+            clearInterval(gameTimers[game]);
+            gameTimers[game] = null;
+        }
+    });
+}
+
+// Общая функция сброса таймера
+function resetTimer(game) {
+    if (gameTimers[game]) {
+        clearInterval(gameTimers[game]);
+        gameTimers[game] = null;
+    }
+}
+
+        function startMemoryGame() {
+            hasInteracted = false;
+    if (!memoryGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Запоминалка' заблокирована! Купите её в магазине.");
+        return;
+    }
+
+    // Сбрасываем таймер перед запуском новой игры
+    resetTimer('memory');
+    let memoryTimer = 60;
+    document.getElementById("memory-timer").textContent = memoryTimer;
+
+    // Устанавливаем таймер игры
+    gameTimers.memory = setInterval(() => {
+        memoryTimer--;
+        document.getElementById("memory-timer").textContent = memoryTimer;
+
+        if (memoryTimer <= 0) {
+            clearInterval(gameTimers.memory);
+            alert("Время вышло! Игра завершена.");
+            endMemoryGame();
+        }
+    }, 1000);
+
+    // Логика игры
+    memoryPairsFound = 0;
+    document.getElementById("memory-pairs-found").textContent = memoryPairsFound;
+
+    // Список фруктов (12 уникальных)
+    const fruits = ["🍎", "🍊", "🍇", "🍌", "🍓", "🍒", "🍍", "🥝", "🥭", "🍑", "🍅", "🥕"];
+    const cards = [...fruits, ...fruits]; // 12 пар (24 карты)
+    cards.sort(() => Math.random() - 0.5); // Перемешиваем карты
+
+    const cardsContainer = document.getElementById("cards-container");
+    cardsContainer.innerHTML = ""; // Очищаем контейнер
+
+    // Создание карт
+    cards.forEach(fruit => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = "?"; // Скрытое состояние карты
+        card.dataset.fruit = fruit; // Привязываем фрукт к карте
+        card.onclick = () => flipCard(card); // Логика переворота карты
+        cardsContainer.appendChild(card);
+    });
+
+    showScreen("memory-game"); // Переход на экран игры
+}
+
+let flippedCards = [];
+
+function flipCard(card) {
+    if (
+        card.classList.contains("flipped") || 
+        card.classList.contains("matched") || 
+        flippedCards.length >= 2
+    ) {
+        return;
+    }
+
+    card.textContent = card.dataset.fruit;
+    card.classList.add("flipped");
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+        const [card1, card2] = flippedCards;
+
+        if (card1.dataset.fruit === card2.dataset.fruit) {
+            card1.classList.add("matched");
+            card2.classList.add("matched");
+            flippedCards = [];
+            memoryPairsFound++;
+            document.getElementById("memory-pairs-found").textContent = memoryPairsFound;
+            balance += 15;
+            const progressToAdd = 15;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.memoryPairs++;
+hasInteracted = true;
+            checkArtifactUnlocks();
+            updateMultipliers();
+            updateProfile();
+            if (memoryPairsFound === 12) {
+                alert("Поздравляем! Вы нашли все пары!");
+                endMemoryGame();
+            }
+        } else {
+            setTimeout(() => {
+                card1.textContent = "?";
+                card2.textContent = "?";
+                card1.classList.remove("flipped");
+                card2.classList.remove("flipped");
+                flippedCards = [];
+            }, 1000);
+        }
+    }
+}
+
+function endMemoryGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11);
+    }
+    resetTimer('memory'); // Останавливаем таймер
+    alert(`Игра завершена! Вы нашли ${memoryPairsFound} пар.`);
+    showScreen("game-menu");
+}
+
+// Общая функция сброса таймера
+function resetTimer(game) {
+    if (gameTimers[game]) {
+        clearInterval(gameTimers[game]);
+        gameTimers[game] = null;
+    }
+}
+
+const flowersData = {
+    "🌹": "Роза",
+    "🌷": "Тюльпан",
+    "🌺": "Гибискус",
+    "🌻": "Подсолнух",
+    "🌼": "Ромашка",
+    "🪻": "Ирис",
+    "🏵️": "Розетка",
+    "🪷": "Лотос"
+};
+
+function startFlowersGame() {
+    hasInteracted = false;
+    if (!flowersGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Цветы' заблокирована. Купите её в магазине.");
+        return;
+    }
+
+    resetTimer('flowers');
+    let flowersTimer = 10;
+    document.getElementById("flowers-timer").textContent = flowersTimer;
+
+    gameTimers.flowers = setInterval(() => {
+        flowersTimer--;
+        document.getElementById("flowers-timer").textContent = flowersTimer;
+
+        if (flowersTimer <= 0) {
+            clearInterval(gameTimers.flowers);
+            alert("Время вышло! Игра окончена.");
+            endFlowersGame();
+        }
+    }, 1000);
+
+    nextFlowerQuestion();
+    showScreen('flowers-game');
+}
+
+function nextFlowerQuestion() {
+    const emojis = Object.keys(flowersData);
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const correctAnswer = flowersData[randomEmoji];
+
+    // Генерация вариантов ответа
+    const options = new Set([correctAnswer]);
+    while (options.size < 3) {
+        const randomOption = flowersData[emojis[Math.floor(Math.random() * emojis.length)]];
+        options.add(randomOption);
+    }
+
+    const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
+
+    // Отображение вопроса и ответов
+    document.getElementById("flower-emoji").textContent = randomEmoji;
+    const answersDiv = document.getElementById("flower-answers");
+    answersDiv.innerHTML = "";
+
+    shuffledOptions.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.classList.add("green-button");
+        btn.onclick = () => {
+            if (option === correctAnswer) {
+                balance += 5;
+                const progressToAdd = 5;
+                const multiplierUsed = Math.min(multipliers, progressToAdd);
+                progress += progressToAdd + multiplierUsed;
+                multipliers -= multiplierUsed;
+                gameProgress.flowerQuestions++;
+                hasInteracted = true;
+                checkArtifactUnlocks();
+                updateMultipliers();
+                updateProfile();
+                nextFlowerQuestion();
+            } else {
+                playErrorSound();
+                alert("Неправильный ответ! Игра окончена.");
+                hasInteracted = true;
+                endFlowersGame();
+            }
+        };
+        answersDiv.appendChild(btn);
+    });
+}
+
+function endFlowersGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11);
+    }
+    resetTimer('flowers');
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen('game-menu');
+}
+
+        let englishGameUnlocked = false; // Доступность игры "Английский"
+        
+        function buyEnglishGame() {
+                if (englishGameUnlocked) {
+                    playErrorSound();
+                    alert("Игра 'Английский' уже разблокирована!");
+            return;
+        }
+
+                if (balance >= 300) {
+                    balance -= 300;
+                    englishGameUnlocked = true;
+                    playSaveSuccessSound();
+                    alert("Игра 'Английский' успешно разблокирована!");
+                    document.getElementById("english-game-btn").classList.remove("locked");
+                    document.getElementById("english-game-btn").classList.add("play");
+                updateProfile();
+            } else {
+                playErrorSound();
+                    alert("Недостаточно баллов для покупки.");
+            }
+        }
+
+        function playLevelUpSound() {
+    const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88]; // Частоты (C4, D4, E4, F4, G4, A4, B4)
+    let startTime = audioContext.currentTime;
+
+    notes.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.type = 'sine'; // Тип волны
+        oscillator.frequency.setValueAtTime(frequency, startTime + index * 0.1); // Начало звука с задержкой
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        gainNode.gain.setValueAtTime(0.5, startTime + index * 0.1); // Громкость
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + index * 0.1 + 0.2); // Плавное затухание
+
+        oscillator.start(startTime + index * 0.1);
+        oscillator.stop(startTime + index * 0.1 + 0.2); // Длительность каждой ноты 200 мс
+    });
+}
+
+function updateGameChemistryButton() {
+    const button = document.getElementById("chemistry-game-btn");
+
+    if (chemistryGameUnlocked) {
+        button.classList.remove("locked");
+        button.classList.add("unlocked");
+        button.textContent = "💡 Химия";
+    } else {
+        button.classList.add("locked");
+        button.classList.remove("unlocked");
+        button.textContent = "💡 Химия";
+    }
+}
+
+function startFindDifferenceGame() {
+    hasInteracted = false;
+    if (!findDifferenceUnlocked) {
+        playErrorSound();
+        alert("Игра 'Находка' заблокирована. Купите её в магазине.");
+        return;
+    }
+
+    // Сбрасываем таймер перед запуском новой игры
+    resetTimer('findDifference');
+    let findDifferenceTimer = 10; // 10 секунд
+    document.getElementById("find-difference-timer").textContent = findDifferenceTimer;
+
+    // Устанавливаем таймер игры
+    gameTimers.findDifference = setInterval(() => {
+        findDifferenceTimer--;
+        document.getElementById("find-difference-timer").textContent = findDifferenceTimer;
+
+        if (findDifferenceTimer <= 0) {
+            clearInterval(gameTimers.findDifference);
+            alert("Время вышло! Игра окончена.");
+            endFindDifferenceGame();
+        }
+    }, 1000);
+
+    // Генерация сетки эмодзи 8×8 (64 эмодзи)
+    function generateEmojiGrid() {
+        const emojiPairs = [
+            ["😶", "😐"], ["😝", "😛"], ["😁", "😄"], ["🔈", "🔉"], ["😦", "😧"],
+            ["✋", "🖐️"], ["☘️", "🍀"], ["📂", "📁"], ["⏳", "⌛"], ["🔓", "🔒"]
+        ];
+
+        const selectedPair = emojiPairs[Math.floor(Math.random() * emojiPairs.length)];
+        const correctEmoji = selectedPair[1];
+        const baseEmoji = selectedPair[0];
+
+        const emojiContainer = document.getElementById("emoji-container");
+        emojiContainer.innerHTML = "";
+
+        const totalEmojis = 8 * 8; // 64 эмодзи
+        const randomIndex = Math.floor(Math.random() * totalEmojis);
+
+        for (let i = 0; i < totalEmojis; i++) {
+            const emoji = document.createElement("span");
+            emoji.textContent = i === randomIndex ? correctEmoji : baseEmoji;
+            emoji.onclick = () => {
+                if (emoji.textContent === correctEmoji) {
+                    balance += 10;
+                    const progressToAdd = 10;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.findDifferenceCount = (gameProgress.findDifferenceCount || 0) + 1; // Увеличиваем счётчик
+hasInteracted = true;
+                    checkArtifactUnlocks();
+                    updateMultipliers();
+                    updateProfile();
+                    generateEmojiGrid(); // Генерируем новую сетку
+                } else {
+                    playErrorSound();
+                    alert("Неправильный выбор! Игра окончена.");
+                    hasInteracted = true;
+                    endFindDifferenceGame(); // Завершаем игру при ошибке
+                }
+            };
+            emojiContainer.appendChild(emoji);
+        }
+    }
+
+    generateEmojiGrid();
+    showScreen("find-difference-game");
+}
+
+function endFindDifferenceGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11);
+    }
+    resetTimer('findDifference'); // Останавливаем таймер
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("game-menu");
+}
+
+function toggleFavorite(id) {
+    const artifact = artifacts.find(a => a.id === id);
+    if (!artifact || !artifact.unlocked) return;
+
+    if (favoriteArtifact === id) {
+        favoriteArtifact = null; // Убираем из избранного
+    } else {
+        favoriteArtifact = id; // Устанавливаем новый
+    }
+
+    updateProfileFavorite();
+    renderArtifacts(); // Перерисовка карточек
+}
+
+//Змейка
+let snakeGameUnlocked = false;
+
+let snake = [{ x: 7, y: 7 }]; // Змейка начинается с одного сегмента
+let apple = { x: 10, y: 10 }; // Стартовая позиция яблока
+let direction = 'right'; // Начальное направление
+let snakeInterval;
+let snakeScore = 0; // Очки за игру
+let isSnakeMoving = false; // Флаг начала движения
+const GRID_SIZE = 15; // Размер поля
+
+function startSnakeGame() {
+    if (!snakeGameUnlocked) {
+        alert("Игра 'Змейка' заблокирована! Купите её в магазине.");
+        playErrorSound();
+        return;
+    }
+
+    // Сбрасываем состояние игры
+    snake = [{ x: 7, y: 7 }]; // Начинаем с одного сегмента
+    generateApple();
+    direction = 'right'; // Направление по умолчанию
+    snakeScore = 0;
+    isSnakeMoving = false;
+
+    renderSnakeGame();
+    showScreen('snake-game');
+}
+
+function renderSnakeGame() {
+    const grid = document.getElementById('snake-grid');
+    grid.innerHTML = ''; // Очистка сетки
+
+    for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+            const cell = document.createElement('div');
+            cell.style.width = '100%';
+            cell.style.height = '100%';
+            cell.style.backgroundColor = 'lightgray';
+            cell.style.transition = 'background-color 0.3s'; // Плавный переход цвета
+
+            // Рисуем змейку
+            if (snake.some(segment => segment.x === x && segment.y === y)) {
+                cell.style.backgroundColor = 'green';
+            }
+
+            // Рисуем яблоко
+            if (apple.x === x && apple.y === y) {
+                cell.style.backgroundColor = 'red';
+            }
+
+            grid.appendChild(cell);
+        }
+    }
+
+    // Обновляем счёт на экране
+    const scoreDisplay = document.getElementById('snake-score');
+    if (scoreDisplay) {
+        scoreDisplay.textContent = `Очки: ${snakeScore}`;
+    }
+}
+
+function moveSnake() {
+    const head = { ...snake[0] }; // Копируем голову змейки
+
+    // Меняем координаты головы в зависимости от направления
+    if (direction === 'up') head.y -= 1;
+    if (direction === 'down') head.y += 1;
+    if (direction === 'left') head.x -= 1;
+    if (direction === 'right') head.x += 1;
+
+    // Проверяем столкновения со стенами или самой змейкой
+    if (
+        head.x < 0 || head.x >= GRID_SIZE || // Выйти за границы поля
+        head.y < 0 || head.y >= GRID_SIZE || // Выйти за границы поля
+        snake.some(segment => segment.x === head.x && segment.y === head.y) // Столкнуться с собой
+    ) {
+        alert(`Игра окончена! Ваш счёт: ${snakeScore}`);
+        endSnakeGame();
+        return;
+    }
+
+    // Добавляем новый сегмент головы
+    snake.unshift(head);
+
+    // Если это первый ход, добавляем второй сегмент змейки
+    if (snake.length === 1) {
+        snake.push({ x: head.x, y: head.y });
+    }
+
+    // Проверяем, съела ли змейка яблоко
+    if (head.x === apple.x && head.y === apple.y) {
+        generateApple(); // Генерация нового яблока
+
+        // Добавляем баллы и прогресс
+        balance += 5;
+        const progressToAdd = 5;
+        const multiplierUsed = Math.min(multipliers, progressToAdd);
+        progress += progressToAdd + multiplierUsed;
+        multipliers -= multiplierUsed;
+
+        gameProgress.snakeApples += 1; // Увеличиваем прогресс "Змейки"
+        updateProfile(); // Обновляем профиль
+
+        // Проверяем разблокировку артефакта "Змееносец"
+        if (gameProgress.snakeApples >= 100) {
+            unlockArtifact(22); // Разблокируем "Змееносец"
+        }
+    } else {
+        // Убираем хвост, если яблоко не съедено
+        snake.pop();
+    }
+
+    // Обновляем отрисовку
+    renderSnakeGame();
+}
+
+function changeDirection(newDirection) {
+    // Запрещаем движение в обратную сторону
+    if ((direction === 'up' && newDirection === 'down') ||
+        (direction === 'down' && newDirection === 'up') ||
+        (direction === 'left' && newDirection === 'right') ||
+        (direction === 'right' && newDirection === 'left')) {
+        return;
+    }
+
+    direction = newDirection;
+
+    // Начинаем движение змейки, если это первое нажатие
+    if (!isSnakeMoving) {
+        isSnakeMoving = true;
+        snakeInterval = setInterval(moveSnake, 200); // Интервал движения змейки
+    }
+}
+
+function generateApple() {
+    let validPosition = false;
+
+    while (!validPosition) {
+        const x = Math.floor(Math.random() * GRID_SIZE);
+        const y = Math.floor(Math.random() * GRID_SIZE);
+
+        // Проверяем, чтобы яблоко не спавнилось на змейке
+        if (!snake.some(segment => segment.x === x && segment.y === y)) {
+            apple = { x, y };
+            validPosition = true;
+        }
+    }
+}
+
+function endSnakeGame() {
+    clearInterval(snakeInterval); // Останавливаем интервал
+    showScreen('game-menu'); // Возвращаемся в главное меню
+}
+
+function updateProfileFavorite() {
+    const profileFavorite = document.getElementById('profile-favorite');
+    if (favoriteArtifact) {
+        const artifact = artifacts.find(a => a.id === favoriteArtifact);
+        profileFavorite.textContent = `🔮 Избранный Артефакт: ${artifact.name} ★`;
+    } else {
+        profileFavorite.textContent = `🔮 Избранный Артефакт: Пусто`;
+    }
+}
+
+function updateFishGameButton() {
+    const button = document.getElementById("fish-game-btn");
+    if (button) {
+        if (fishGameUnlocked) {
+            button.classList.remove("locked");
+            button.classList.add("unlocked");
+        } else {
+            button.classList.add("locked");
+            button.classList.remove("unlocked");
+        }
+    } else {
+        console.warn("Кнопка 'Рыбка' не найдена.");
+    }
+}
+
+        // Сохранение данных в LocalStorage
+function saveProgress() {
+    if (balance === 0 && progress === 0 && multipliers === 0) {
+        alert("Нечего сохранять! Данные пусты.");
+        return;
+    }
+
+    const data = {
+        avatar: localStorage.getItem("avatar") || null, // Сохраняем аватар
+        balance: balance > 0 ? balance : null, // Сохраняем баланс
+        progress: progress > 0 ? progress : null, // Сохраняем прогресс
+        multipliers: multipliers > 0 ? multipliers : null, // Сохраняем множители
+        unlockedGames: {
+            memoryGame: !!memoryGameUnlocked,
+            englishGame: !!englishGameUnlocked,
+            countriesGame: !!countriesGameUnlocked,
+            findDifferenceGame: !!findDifferenceUnlocked,
+            flowersGame: !!flowersGameUnlocked,
+            musicGame: !!musicGameUnlocked,
+            chemistryGame: !!chemistryGameUnlocked,
+            snakeGame: !!snakeGameUnlocked,
+            fishGame: !!fishGameUnlocked // Сохраняем статус новой игры "Рыбка"
+        },
+        nickname: nickname || "Игрок", // Сохраняем имя игрока
+        promotions: currentPromotions.map(promo => ({
+            id: promo.id,
+            purchased: promo.purchased
+        })), // Сохраняем акции магазина
+        gameProgress, // Сохраняем прогресс в играх
+        artifacts, // Сохраняем текущий прогресс артефактов
+        favoriteArtifact // Сохраняем любимый артефакт
+    };
+
+    console.log("Сохраняемые данные:", data);
+
+    try {
+        localStorage.setItem("gameSave", JSON.stringify(data));
+        console.log("Прогресс успешно сохранён!");
+    } catch (error) {
+        console.error("Ошибка при сохранении прогресса:", error);
+    }
+
+    playSaveSuccessSound();
+    sendPlayerStatsToTelegram();
+    checkPromotionsFromTelegram();
+    fetchPromotionsFromTelegram();
+    alert("Прогресс успешно сохранён!");
+}
+
+// Лоад
+let lastLoadedProgress = null; // Храним последнее загруженное состояние
+let saveLoadCount = 0; // Счётчик загрузок сохранений
+
+function loadProgress() {
+    const savedData = localStorage.getItem("gameSave");
+    if (!savedData) {
+        console.warn("Нет сохранённых данных.");
+        alert("Нет сохранённых данных.");
+        return;
+    }
+
+    try {
+        const data = JSON.parse(savedData);
+        console.log("Загруженные данные:", data);
+
+        nickname = data.nickname || "Игрок";
+        balance = data.balance || 0;
+        progress = data.progress || 0;
+        multipliers = data.multipliers || 0;
+
+        // Восстанавливаем состояния игр
+        memoryGameUnlocked = !!data.unlockedGames.memoryGame;
+        englishGameUnlocked = !!data.unlockedGames.englishGame;
+        countriesGameUnlocked = !!data.unlockedGames.countriesGame;
+        findDifferenceUnlocked = !!data.unlockedGames.findDifferenceGame;
+        flowersGameUnlocked = !!data.unlockedGames.flowersGame;
+        musicGameUnlocked = !!data.unlockedGames.musicGame;
+        chemistryGameUnlocked = !!data.unlockedGames.chemistryGame;
+        snakeGameUnlocked = !!data.unlockedGames.snakeGame;
+        fishGameUnlocked = !!data.unlockedGames.fishGame; // Восстанавливаем состояние новой игры "Рыбка"
+
+        favoriteArtifact = data.favoriteArtifact || null; // Восстанавливаем любимый артефакт
+
+        // Восстанавливаем прогресс по играм
+        if (data.gameProgress) {
+            Object.assign(gameProgress, data.gameProgress);
+        }
+
+        // Восстанавливаем состояние артефактов
+        if (data.artifacts) {
+            artifacts.forEach(artifact => {
+                const savedArtifact = data.artifacts.find(a => a.id === artifact.id);
+                if (savedArtifact) {
+                    artifact.unlocked = savedArtifact.unlocked;
+                }
+            });
+        }
+
+        // Восстанавливаем аватар
+        if (data.avatar) {
+            console.log("Аватарка восстановлена.");
+            localStorage.setItem("avatar", data.avatar);
+            document.getElementById("avatar").src = data.avatar;
+        } else {
+            console.warn("Аватарка отсутствует.");
+            localStorage.removeItem("avatar");
+            document.getElementById("avatar").src = "";
+        }
+
+        // Обновляем интерфейс
+        document.getElementById("nickname-display").textContent = nickname;
+        updateProfileFavorite(); // Обновляем любимый артефакт
+        updateProfile(); // Обновляем общий профиль
+        toggleGameButtons(); // Переключаем кнопки доступных игр
+        updateMultipliers(); // Обновляем множители
+        updateMusicGameButton(); // Обновляем состояние кнопки игры "Музыка"
+        updateGameChemistryButton(); // Обновляем состояние кнопки игры "Химия"
+        updateSnakeGameButton(); // Обновляем состояние кнопки игры "Змейка"
+        updateFishGameButton(); // Обновляем состояние кнопки игры "Рыбка"
+
+        playLevelUpSound(); // Звук загрузки
+        console.log("Прогресс успешно загружен.");
+        alert("Прогресс успешно загружен!");
+    } catch (error) {
+        console.error("Ошибка при загрузке прогресса:", error);
+        alert("Ошибка при загрузке данных. Проверьте сохранённые данные.");
+    }
+}
+
+function sendPlayerStatsToTelegram() {
+    const botToken = "7722889358:AAF13BUUXHYJQNiJejniRjFnHVbAwDjteVE"; // Токен бота
+    const chatId = "5666282083"; // Ваш chat_id
+    const currentStatus = statuses.find(s => progress < s.next) || statuses[statuses.length - 1];
+    const statusName = currentStatus.name;
+
+    // Формируем список разблокированных игр
+    const unlockedGames = [];
+    if (memoryGameUnlocked) unlockedGames.push("🃏 Запоминалка");
+    if (englishGameUnlocked) unlockedGames.push("📚 Английский");
+    if (countriesGameUnlocked) unlockedGames.push("🌍 Страны");
+    if (findDifferenceUnlocked) unlockedGames.push("🔍 Находка");
+    if (flowersGameUnlocked) unlockedGames.push("🌸 Цветы");
+    if (musicGameUnlocked) unlockedGames.push("🎵 Музыка");
+    if (chemistryGameUnlocked) unlockedGames.push("💡 Химия");
+    if (snakeGameUnlocked) unlockedGames.push("🐍 Змейка");
+    if (fishGameUnlocked) unlockedGames.push("🐟 Рыбка");
+
+    const favoriteArtifactName = favoriteArtifact
+        ? artifacts.find(a => a.id === favoriteArtifact)?.name || "Неизвестно"
+        : "Не выбран";
+
+    // Прогресс по играм
+    const gameProgressData = Object.entries(gameProgress)
+        .map(([game, progress]) => `${game}: ${progress} вопросов`)
+        .join("\n");
+
+    // Артефакты
+    const artifactData = artifacts
+        .map(a => `${a.name}: ${a.unlocked ? "Разблокирован" : "Заблокирован"}`)
+        .join("\n");
+
+    // Формируем содержимое текстового файла
+    const fileContent = `
+👤 Никнейм: ${nickname || "Игрок"}
+🏆 Статус: ${statusName}
+📈 Прогресс: ${progress}
+💰 Баланс: ${balance}
+➕ Мультипликаторы: ${multipliers}
+🔮 Любимый артефакт: ${favoriteArtifactName}
+
+🎮 Прогресс по играм:
+${gameProgressData || "Нет данных"}
+
+🏺 Артефакты:
+${artifactData || "Нет артефактов"}
+    `.trim();
+
+    const artifactFileName = `${nickname || "Игрок"}_stats.txt`;
+
+    // Отправка текстового файла в Telegram
+    const sendArtifactFile = () => {
+        const fileBlob = new Blob([fileContent], { type: "text/plain" });
+        const formData = new FormData();
+        formData.append('chat_id', chatId);
+        formData.append('document', fileBlob, artifactFileName);
+
+        fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.ok) {
+                console.log("Файл со статистикой успешно отправлен в Telegram.");
+            } else {
+                console.error("Ошибка при отправке файла:", res.description);
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка сети при отправке файла:", err);
+        });
+    };
+
+    // Текстовое сообщение для Telegram
+    const message = `
+📊 <b>Статистика пользователя:</b>\n
+👤 <b>Никнейм:</b> ${nickname || "Игрок"}\n
+🏷️ <b>Тег:</b> ${playerTag || "N/A"}\n
+💰 <b>Баланс:</b> ${balance}\n
+➕ <b>Мультипликаторы:</b> ${multipliers}\n
+📈 <b>Прогресс:</b> ${progress}\n
+🏆 <b>Статус:</b> ${statusName}\n
+🎮 <b>Разблокированные игры:</b> ${unlockedGames.length > 0 ? unlockedGames.join(", ") : "Нет"}\n
+🔮 <b>Любимый артефакт:</b> ${favoriteArtifactName}
+    `.trim();
+
+    // Отправка текстового сообщения
+    const sendTextMessage = () => {
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: "HTML"
+            }),
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.ok) {
+                console.log("Статистика успешно отправлена в Telegram.");
+            } else {
+                console.error("Ошибка при отправке сообщения:", res.description);
+            }
+        })
+        .catch(err => {
+            console.error("Ошибка сети при отправке сообщения:", err);
+        });
+    };
+
+    // Отправка аватарки, если она существует
+    const sendAvatar = () => {
+        const avatar = localStorage.getItem('avatar'); // Берём аватарку из localStorage
+        if (avatar) {
+            fetch(avatar)
+                .then(res => res.blob())
+                .then(blob => {
+                    const formData = new FormData();
+                    formData.append('chat_id', chatId);
+                    formData.append('caption', message);
+                    formData.append('parse_mode', 'HTML');
+                    formData.append('document', blob, 'avatar.jpg');
+
+                    return fetch(`https://api.telegram.org/bot${botToken}/sendDocument`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.ok) {
+                        console.log("Аватарка успешно отправлена в Telegram.");
+                    } else {
+                        console.error("Ошибка при отправке аватарки:", res.description);
+                    }
+                    sendArtifactFile(); // Отправляем файл с артефактами
+                })
+                .catch(err => {
+                    console.error("Ошибка сети при отправке аватарки:", err);
+                    sendTextMessage(); // Если аватарка не отправилась, отправляем сообщение
+                    sendArtifactFile();
+                });
+        } else {
+            sendTextMessage();
+            sendArtifactFile();
+        }
+    };
+
+    // Отправляем аватарку, сообщение и файл
+    sendAvatar();
+}
+
+        // Логика магазина
+        function updateMusicGameButton() {
+    const button = document.getElementById("music-game-btn");
+
+    if (musicGameUnlocked) {
+        button.classList.remove("locked");
+        button.classList.add("unlocked");
+        button.textContent = "🎵 Музыка";
+    } else {
+        button.classList.add("locked");
+        button.classList.remove("unlocked");
+        button.textContent = "🎵 Музыка";
+    }
+}
+
+        function buyMusicGame() {
+    if (musicGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Музыка' уже разблокирована!");
+        return;
+    }
+
+    if (balance >= 1000) {
+        balance -= 1000;
+        musicGameUnlocked = true;
+        playSaveSuccessSound();
+        alert("Игра 'Музыка' успешно разблокирована!");
+        document.getElementById("music-game-btn").classList.remove("locked");
+        document.getElementById("music-game-btn").classList.add("play");
+        updateProfile();
+        saveProgress();
+        updateMusicGameButton();
+    } else {
+        playErrorSound();
+        alert("Недостаточно баллов для покупки.");
+    }
+}
+
+        function buyMultipliers() {
+    const cost = 0; // Стоимость
+    const multipliersToBuy = 100; // Количество покупаемых удвоителей
+
+    if (balance >= cost) {
+        balance -= cost;
+        multipliers += multipliersToBuy;
+        updateMultipliers();
+        playSaveSuccessSound();
+        alert(`Вы купили ${multipliersToBuy} удвоителей!`);
+        updateProfile(); // Обновляем отображение
+    } else {
+        playErrorSound();
+        alert("Недостаточно баллов для покупки.");
+    }
+}
+
+        function buyFindDifferenceGame() {
+    if (findDifferenceUnlocked) {
+        playErrorSound();
+        alert("Игра 'Находка' уже разблокирована!");
+        return;
+    }
+
+    if (balance >= 500) {
+        balance -= 500;
+        findDifferenceUnlocked = true;
+        playSaveSuccessSound();
+        alert("Игра 'Находка' успешно разблокирована!");
+        document.getElementById("find-difference-btn").classList.remove("locked");
+        document.getElementById("find-difference-btn").classList.add("play");
+        sendFindDifferenceAPIKey();
+        updateProfile();
+        saveProgress();
+setTimeout(loadProgress, 100); // Подгрузка с небольшой задержкой
+    } else {
+        playErrorSound();
+        alert("Недостаточно баллов для покупки.");
+    }
+}
+
+        function buyCountriesGame() {
+    if (countriesGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Страны' уже разблокирована!");
+        return;
+    }
+
+    if (balance >= 400) {
+        balance -= 400;
+        countriesGameUnlocked = true;
+        playSaveSuccessSound();
+        alert("Игра 'Страны' успешно разблокирована!");
+        document.getElementById("countries-game-btn").classList.remove("locked");
+        document.getElementById("countries-game-btn").classList.add("play");
+        updateProfile();
+    } else {
+        playErrorSound();
+        alert("Недостаточно баллов для покупки.");
+    }
+}
+
+        function spinRoulette() {
+    const random = Math.random() * 100; // Генерация числа от 0 до 100
+    let reward;
+
+    if (random <= 3) {
+        // 3% шанс на артефакт "🎰 Везунчик"
+        reward = "🎰 Везунчик";
+        unlockArtifact(25); // Разблокировка артефакта с ID 25
+        alert(`Поздравляем! Вы выиграли артефакт "${reward}"!`);
+        saveProgressSilently();
+    } else {
+        // 97% шанс на деньги
+        const money = Math.floor(Math.random() * 200) + 1;
+        balance += money;
+        reward = `$${money}`;
+        alert(`Поздравляем! Вы выиграли ${reward}!`);
+        playLevelUpSound();
+        saveProgressSilently();
+    }
+
+    updateProfile(); // Обновление профиля игрока
+}
+
+function updateSnakeGameButton() {
+    const button = document.getElementById("snake-game-btn"); // Идентификатор кнопки "Змейка"
+    if (!button) {
+        console.error("Кнопка 'Змейка' не найдена.");
+        return;
+    }
+
+    if (snakeGameUnlocked) {
+        button.classList.remove("locked"); // Убираем класс блокировки
+        button.classList.add("unlocked"); // Добавляем класс разблокировки
+        button.disabled = false; // Делаем кнопку активной
+    } else {
+        button.classList.remove("unlocked"); // Убираем класс разблокировки
+        button.classList.add("locked"); // Добавляем класс блокировки
+        button.disabled = true; // Делаем кнопку неактивной
+    }
+}
+
+function saveProgressSilently() {
+    const data = {
+        nickname: nickname || "Игрок",
+        avatar: localStorage.getItem("avatar") || null,
+        balance: balance > 0 ? balance : null,
+        progress: progress > 0 ? progress : null,
+        multipliers: multipliers > 0 ? multipliers : null,
+        unlockedGames: {
+            memoryGame: memoryGameUnlocked,
+            englishGame: englishGameUnlocked,
+            countriesGame: countriesGameUnlocked,
+            findDifferenceGame: findDifferenceUnlocked,
+            flowersGame: flowersGameUnlocked,
+            musicGame: musicGameUnlocked,
+            chemistryGame: chemistryGameUnlocked,
+            snakeGame: snakeGameUnlocked,
+            fishGame: fishGameUnlocked
+        },
+        promotions: currentPromotions.map(promo => ({
+            id: promo.id,
+            purchased: promo.purchased
+        }))
+    };
+
+    localStorage.setItem("gameSave", JSON.stringify(data));
+    updateProfile();
+}
+
+        let flowersGameUnlocked = false;
+
+function buyFlowersGame() {
+    if (flowersGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Цветы' уже разблокирована!");
+        return;
+    }
+
+    if (balance >= 250) {
+        balance -= 250;
+        flowersGameUnlocked = true;
+        playSaveSuccessSound();
+        alert("Игра 'Цветы' успешно разблокирована!");
+        document.getElementById("flowers-game-btn").classList.remove("locked");
+        document.getElementById("flowers-game-btn").classList.add("play");
+        updateProfile();
+        saveProgress();
+    } else {
+        playErrorSound();
+        alert("Недостаточно баллов для покупки.");
+    }
+}
+
+        function buyMemoryGame() {
+            if (memoryGameUnlocked) {
+                playErrorSound();
+                alert("Игра 'Запоминалка' уже разблокирована!");
+                return;
+            }
+
+            if (balance >= 1000) {
+                balance -= 1000;
+                memoryGameUnlocked = true;
+                playSaveSuccessSound();
+                alert("Игра 'Запоминалка' успешно разблокирована!");
+                document.getElementById("memory-game-btn").classList.remove("locked");
+                document.getElementById("memory-game-btn").classList.add("play");
+                updateProfile();
+            } else {
+                playErrorSound();
+                alert("Недостаточно баллов для покупки.");
+            }
+        }
+
+        // Логика профиля
+        function changeName() {
+    const newName = prompt("Введите новое имя:");
+    if (newName && newName.trim()) {
+        nickname = newName.trim();
+        document.getElementById("nickname-display").textContent = nickname;
+        alert("Имя успешно изменено!");
+    }
+}
+
+function resetAvatarOnStart() {
+    // Очищаем аватарку
+    const avatarElement = document.getElementById('avatar');
+    if (avatarElement) {
+        avatarElement.src = ""; // Убираем аватарку
+    }
+
+    // Удаляем аватарку из локального хранилища
+    localStorage.removeItem('avatar');
+}
+
+// Вызываем функцию при загрузке страницы
+window.onload = function() {
+    resetAvatarOnStart();
+
+    // Загружаем аватарку, если она есть
+    const savedAvatar = localStorage.getItem('avatar');
+    if (savedAvatar) {
+        document.getElementById('avatar').src = savedAvatar;
+    } else {
+        document.getElementById('avatar').src = ""; // Убедимся, что аватарка сброшена
+    }
+};
+
+function toggleGameButtons() {
+    currentPromotions.forEach(promo => {
+        const button = document.getElementById(`${promo.id}-btn`);
+
+        if (!button) {
+            return;
+        }
+
+        console.log(`Обработка кнопки ${promo.id}. Purchased: ${promo.purchased}`);
+
+        if (promo.purchased) {
+            button.classList.remove("locked");
+            button.classList.add("play");
+
+            if (promo.id === "music_game") {
+                musicGameUnlocked = true;
+                console.log("Музыка разблокирована, цвет кнопки изменён на play.");
+            }
+        } else {
+            button.classList.remove("play");
+            button.classList.add("locked");
+
+            if (promo.id === "music_game") {
+                musicGameUnlocked = false;
+                console.log("Музыка заблокирована, кнопка осталась серой.");
+            }
+        }
+
+        console.log(`Классы кнопки ${promo.id}:`, button.classList);
+    });
+}
+
+function updateGameButton(buttonId, isUnlocked) {
+    const button = document.getElementById(buttonId);
+    if (isUnlocked) {
+        button.classList.remove("locked");
+        button.classList.add("unlocked");
+        button.disabled = false;
+    } else {
+        button.classList.add("locked");
+        button.disabled = true;
+    }
+}
+
+        //Логика Стран
+        const countries = [
+    { flag: "🇫🇷", name: "Франция" },
+    { flag: "🇩🇪", name: "Германия" },
+    { flag: "🇮🇹", name: "Италия" },
+    { flag: "🇯🇵", name: "Япония" },
+    { flag: "🇨🇦", name: "Канада" },
+    { flag: "🇺🇸", name: "США" },
+    { flag: "🇧🇷", name: "Бразилия" },
+    { flag: "🇦🇺", name: "Австралия" },
+    { flag: "🇪🇸", name: "Испания" },
+    { flag: "🇬🇧", name: "Великобритания" },
+    { flag: "🇧🇷", name: "Бразилия" },
+    { flag: "🇺🇦", name: "Украина" },
+    { flag: "🇷🇺", name: "Россия" },
+    { flag: "🇰🇿", name: "Казахстан" }
+];
+
+        //Логика Английского
+        const words = [
+    { emoji: "🍎", answer: "Apple" },
+    { emoji: "🍌", answer: "Banana" },
+    { emoji: "🍓", answer: "Strawberry" },
+    { emoji: "🍇", answer: "Grape" },
+    { emoji: "🍉", answer: "Watermelon" },
+    { emoji: "🍒", answer: "Cherry" },
+    { emoji: "🍑", answer: "Peach" },
+    { emoji: "🍍", answer: "Pineapple" },
+    { emoji: "🥭", answer: "Mango" },
+    { emoji: "🥝", answer: "Kiwi" },
+    { emoji: "🍅", answer: "Tomato" },
+    { emoji: "🥕", answer: "Carrot" },
+    { emoji: "🌽", answer: "Corn" },
+    { emoji: "🍞", answer: "Bread" },
+    { emoji: "🧀", answer: "Cheese" },
+    { emoji: "🥩", answer: "Meat" },
+    { emoji: "🥗", answer: "Salad" },
+    { emoji: "🍔", answer: "Burger" },
+    { emoji: "🌭", answer: "Hot Dog" },
+    { emoji: "🍕", answer: "Pizza" },
+    { emoji: "🍟", answer: "Fries" },
+    { emoji: "🍿", answer: "Popcorn" },
+    { emoji: "🥤", answer: "Milkshake" },
+    { emoji: "🧃", answer: "Juice" },
+    { emoji: "🐶", answer: "Dog" },
+    { emoji: "🐱", answer: "Cat" },
+    { emoji: "🐭", answer: "Mouse" },
+    { emoji: "🐹", answer: "Hamster" },
+    { emoji: "🐰", answer: "Rabbit" },
+    { emoji: "🦊", answer: "Fox" },
+    { emoji: "🐻", answer: "Bear" },
+    { emoji: "🐼", answer: "Panda" },
+    { emoji: "🐨", answer: "Koala" },
+    { emoji: "🦁", answer: "Lion" },
+    { emoji: "🐯", answer: "Tiger" },
+    { emoji: "🐮", answer: "Cow" },
+    { emoji: "🐷", answer: "Pig" },
+    { emoji: "🐸", answer: "Frog" },
+    { emoji: "🐔", answer: "Chicken" },
+    { emoji: "🦆", answer: "Duck" },
+    { emoji: "🐦", answer: "Bird" },
+    { emoji: "🐧", answer: "Penguin" },
+    { emoji: "🐢", answer: "Turtle" },
+    { emoji: "🐍", answer: "Snake" },
+    { emoji: "🦋", answer: "Butterfly" },
+    { emoji: "🐜", answer: "Ant" },
+    { emoji: "🐝", answer: "Bee" },
+    { emoji: "🦀", answer: "Crab" },
+    { emoji: "🐬", answer: "Dolphin" }
+];
+
+function startEnglishGame() {
+    hasInteracted = false;
+    if (!englishGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Английский' заблокирована. Купите её в магазине.");
+        return;
+    }
+
+    // Сбрасываем таймер перед запуском новой игры
+    resetTimer('english');
+    let englishTimer = 10;
+    document.getElementById("english-timer").textContent = englishTimer;
+
+    // Устанавливаем таймер игры
+    gameTimers.english = setInterval(() => {
+        englishTimer--;
+        document.getElementById("english-timer").textContent = englishTimer;
+
+        if (englishTimer <= 0) {
+            clearInterval(gameTimers.english);
+            alert("Время вышло! Игра окончена.");
+            endEnglishGame();
+        }
+    }, 1000);
+
+    // Генерация нового вопроса
+    function nextQuestion() {
+        const randomWord = words[Math.floor(Math.random() * words.length)];
+        const correctAnswer = randomWord.answer;
+
+        // Создаем варианты ответа
+        const options = new Set([correctAnswer]);
+        while (options.size < 3) {
+            const randomOption = words[Math.floor(Math.random() * words.length)].answer;
+            options.add(randomOption);
+        }
+
+        const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
+
+        // Отображаем вопрос
+        document.getElementById("english-question").textContent = randomWord.emoji;
+        const answersDiv = document.getElementById("english-answers");
+        answersDiv.innerHTML = "";
+
+        shuffledOptions.forEach(option => {
+            const btn = document.createElement("button");
+            btn.textContent = option;
+            btn.onclick = () => {
+                if (option === correctAnswer) {
+                    balance += 10;
+                    const progressToAdd = 10;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.englishQuestions++;
+hasInteracted = true;
+                    checkArtifactUnlocks();
+                    updateProfile();
+                    nextQuestion(); // Новый вопрос
+                } else {
+                    playErrorSound();
+                    alert("Неправильный ответ! Игра окончена.");
+                    hasInteracted = true;
+                    endEnglishGame();
+                }
+            };
+            answersDiv.appendChild(btn);
+        });
+    }
+
+    // Запускаем первый вопрос
+    nextQuestion();
+    showScreen("english-game");
+}
+
+function endEnglishGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11);
+    }
+    resetTimer('english'); // Останавливаем таймер
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("game-menu");
+}
+
+function startChemistryGame() {
+    hasInteracted = false;
+    if (!chemistryGameUnlocked) {
+        playErrorSound();
+        alert("Игра 'Химия' заблокирована! Купите её в магазине.");
+        return;
+    }
+
+    resetTimer("chemistry");
+    let chemistryTimer = 10;
+    document.getElementById("chemistry-timer").textContent = chemistryTimer;
+
+    gameTimers.chemistry = setInterval(() => {
+        chemistryTimer--;
+        document.getElementById("chemistry-timer").textContent = chemistryTimer;
+
+        if (chemistryTimer <= 0) {
+            clearInterval(gameTimers.chemistry);
+            alert("Время вышло! Игра окончена.");
+            endChemistryGame();
+        }
+    }, 1000);
+
+    const elements = [
+        { symbol: "H", name: "Водород" },
+        { symbol: "C", name: "Углерод" },
+        { symbol: "N", name: "Азот" },
+        { symbol: "O", name: "Кислород" },
+        { symbol: "F", name: "Фтор" },
+        { symbol: "Na", name: "Натрий" },
+        { symbol: "Mg", name: "Магний" },
+        { symbol: "Al", name: "Алюминий" },
+        { symbol: "Si", name: "Кремний" },
+        { symbol: "P", name: "Фосфор" },
+        { symbol: "S", name: "Сера" },
+        { symbol: "Cl", name: "Хлор" },
+        { symbol: "K", name: "Калий" },
+        { symbol: "Zn", name: "Цинк" },
+        { symbol: "Ag", name: "Серебро" },
+        { symbol: "Cu", name: "Медь" },
+        { symbol: "Fe", name: "Железо" },
+    ];
+
+    function nextQuestion() {
+        const element = elements[Math.floor(Math.random() * elements.length)];
+        const correctAnswer = element.name;
+
+        const options = new Set([correctAnswer]);
+        while (options.size < 3) {
+            const randomOption = elements[Math.floor(Math.random() * elements.length)].name;
+            options.add(randomOption);
+        }
+
+        const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
+
+        document.getElementById("chemistry-symbol").textContent = element.symbol;
+        const answersDiv = document.getElementById("chemistry-answers");
+        answersDiv.innerHTML = "";
+
+        shuffledOptions.forEach(option => {
+            const btn = document.createElement("button");
+            btn.textContent = option;
+            btn.onclick = () => {
+                if (option === correctAnswer) {
+                    balance += 10;
+                    const progressToAdd = 10;
+const multiplierUsed = Math.min(multipliers, progressToAdd);
+progress += progressToAdd + multiplierUsed;
+multipliers -= multiplierUsed;
+gameProgress.chemistryQuestions++;
+hasInteracted = true;
+                    checkArtifactUnlocks();
+                    updateProfile();
+                    nextQuestion();
+                } else {
+                    playErrorSound();
+                    alert("Неправильный ответ! Игра окончена.");
+                    hasInteracted = true;
+                    endChemistryGame();
+                }
+            };
+            answersDiv.appendChild(btn);
+        });
+    }
+
+    nextQuestion();
+    showScreen("chemistry-game");
+}
+
+function endChemistryGame() {
+    if (!hasInteracted) {
+        unlockArtifact(11);
+    }
+    resetTimer("chemistry");
+    alert(`Игра завершена! Ваш прогресс: ${progress}`);
+    showScreen("game-menu");
+}
+
+// Общая функция сброса таймера
+function resetTimer(game) {
+    if (gameTimers[game]) {
+        clearInterval(gameTimers[game]);
+        gameTimers[game] = null;
+    }
+}
+
+function updateGameMenu() {
+    const games = [
+        { id: "math-game-btn", unlocked: true }, // Математика всегда разблокирована
+        { id: "flowers-game-btn", unlocked: flowersGameUnlocked },
+        { id: "memory-game-btn", unlocked: memoryGameUnlocked },
+        { id: "english-game-btn", unlocked: englishGameUnlocked },
+        { id: "countries-game-btn", unlocked: countriesGameUnlocked },
+        { id: "find-difference-btn", unlocked: findDifferenceUnlocked }
+    ];
+
+    games.forEach(game => {
+        const button = document.getElementById(game.id);
+        if (game.unlocked) {
+            button.classList.remove("locked");
+            button.classList.add("unlocked");
+        } else {
+            button.classList.remove("unlocked");
+            button.classList.add("locked");
+        }
+    });
+}
+
+        // Общая функция для переключения экранов
+        function showScreen(screenId) {
+    // Скрываем все экраны
+    document.querySelectorAll(".container").forEach(el => el.classList.add("hidden"));
+
+    // Получаем целевой экран
+    const targetScreen = document.getElementById(screenId);
+
+    if (targetScreen) {
+        // Показываем целевой экран
+        targetScreen.classList.remove("hidden");
+
+        // Выполняем действия в зависимости от экрана
+        switch (screenId) {
+            case "profile":
+                updateProfile(); // Обновляем профиль
+                break;
+
+            case "artifacts-menu":
+                renderArtifacts(); // Рендерим артефакты
+                break;
+
+            case "game-menu":
+                updateGameMenu(); // Обновляем доступность игр (если нужно)
+                break;
+
+            // Добавьте другие экраны, если требуется
+            default:
+                console.log(`Открыт экран: ${screenId}`);
+                break;
+        }
+    } else {
+        console.error(`Экран с ID "${screenId}" не найден.`);
+    }
+}
+        
+        // Функция для показа окна с политикой и затемнением фона
+function showAgreement() {
+    checkPromotionsFromTelegram();
+    document.getElementById('agreement-modal').classList.remove('hidden');
+    document.getElementById('overlay').classList.remove('hidden');
+}
+
+// Функция для скрытия окна и снятия затемнения
+function closeAgreement() {
+    document.getElementById('agreement-modal').classList.add('hidden');
+    document.getElementById('overlay').classList.add('hidden');
+}
+
+async function checkPromotionsFromTelegram() {
+    const botToken = "8021165031:AAFieGKK3_Gfi4DZZTkw90zP_p12YAyvafU"; // Токен бота
+    const chatId = "5666282083"; // ID чата
+
+    try {
+        // Получаем последние сообщения из чата
+        const response = await fetch(`https://api.telegram.org/bot${botToken}/getUpdates`);
+        const data = await response.json();
+
+        if (!data.result || data.result.length === 0) {
+            console.log("Нет новых сообщений в чате.");
+            return;
+        }
+
+        // Ищем сообщения с акциями
+        const promoMessage = data.result.reverse().find(message => {
+            try {
+                const text = message.message.text;
+                const json = JSON.parse(text);
+                return Array.isArray(json.actions); // Проверяем, содержит ли сообщение акции
+            } catch {
+                return false;
+            }
+        });
+
+        if (!promoMessage) {
+            console.log("Акции не найдены в сообщениях.");
+            return;
+        }
+
+        // Обновляем акции в игре
+        const promoData = JSON.parse(promoMessage.message.text);
+        updatePromotions(promoData);
+
+        console.log("Акции успешно обновлены:", promoData);
+    } catch (error) {
+        console.error("Ошибка при получении акций:", error);
+    }
+}
+
+        // Базовые товары магазина
+const defaultPromotions = [
+    { id: "memory_game", name: "🃏 Запоминалка", basePrice: 1000, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "english_game", name: "📚 Английский", basePrice: 300, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "countries_game", name: "🌍 Страны", basePrice: 400, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "find_difference_game", name: "🔍 Находка", basePrice: 500, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "flowers_game", name: "🌸 Цветы", basePrice: 250, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "music_game", name: "🎵 Музыка", basePrice: 1000, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "chemistry_game", name: "💡 Химия", basePrice: 500, category: "main", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "snake_game", name: "🐍 Змейка", basePrice: 1000, category: "main", active: true, discount: 0, purchased: false },
+     { id: "fish_game", name: "🐟 Рыбка", basePrice: 1000, category: "main", active: true, discount: 0, purchased: false },
+    { id: "roulette", name: "🎰 Рулетка", basePrice: 100, category: "addons", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "multipliers", name: "Удвоители [100X]", basePrice: 100, category: "addons", active: true, discount: 0, discountComment: "", purchased: false },
+    { id: "boss_artifact", name: "💼 Босс", basePrice: 1000, category: "artifacts", active: true, discount: 0, discountComment: "", purchased: false } // Новый товар
+];
+
+let currentPromotions = [...defaultPromotions]; // Копируем базовые акции
+
+function updateGameMenuButton(buttonId) {
+    const button = document.getElementById(buttonId);
+    if (button) {
+        console.log(`Кнопка ${buttonId} найдена. Меняем класс на 'unlocked'.`);
+        button.classList.remove("locked"); // Убираем класс блокировки
+        button.classList.add("unlocked"); // Добавляем класс разблокировки
+    } else {
+        console.error(`Кнопка с id '${buttonId}' не найдена в меню игр.`);
+    }
+}
+
+function handleGameButtonClick(gameId, unlocked) {
+    if (!unlocked) {
+        playErrorSound();
+        alert(`Игра '${gameId}' заблокирована! Купите её в магазине.`);
+        return;
+    }
+    // Если разблокирована, вызывается соответствующий старт игры
+    const gameFunctions = {
+        memoryGame: startMemoryGame,
+        englishGame: startEnglishGame,
+        countriesGame: startCountriesGame,
+        findDifferenceGame: startFindDifferenceGame,
+        flowersGame: startFlowersGame,
+        musicGame: startMusicGame,
+        fishGame: startFishGame
+    };
+
+    gameFunctions[gameId]();
+}
+
+// Генерация товаров в магазине
+function applyPromotions() {
+    const shopCarousel = document.getElementById("shop-carousel");
+    shopCarousel.innerHTML = ""; // Очищаем содержимое магазина
+
+    currentPromotions.forEach(promo => {
+        if (promo.active) {
+            const finalPrice = promo.discount > 0
+                ? Math.ceil(promo.basePrice * (1 - promo.discount / 100))
+                : promo.basePrice;
+
+            const card = document.createElement("div");
+            card.className = "shop-card";
+
+            // Проверяем, разблокирована ли игра или артефакт
+            let isPurchased = promo.purchased;
+
+            switch (promo.id) {
+                case "memory_game":
+                    isPurchased = memoryGameUnlocked;
+                    break;
+                case "english_game":
+                    isPurchased = englishGameUnlocked;
+                    break;
+                case "countries_game":
+                    isPurchased = countriesGameUnlocked;
+                    break;
+                case "find_difference_game":
+                    isPurchased = findDifferenceUnlocked;
+                    break;
+                case "flowers_game":
+                    isPurchased = flowersGameUnlocked;
+                    break;
+                case "music_game":
+                    isPurchased = musicGameUnlocked;
+                    break;
+                case "chemistry_game":
+                    isPurchased = chemistryGameUnlocked;
+                    break;
+                case "snake_game":
+                    isPurchased = snakeGameUnlocked;
+                    break;
+                case "fish_game":
+                    isPurchased = fishGameUnlocked;
+                    break;
+                case "boss_artifact":
+                    const artifact = artifacts.find(a => a.name === "💼 Босс");
+                    if (artifact) {
+                        isPurchased = artifact.unlocked;
+                    }
+                    break;
+                case "multipliers":
+                case "roulette":
+                    isPurchased = false; // Эти товары можно покупать бесконечно
+                    break;
+                default:
+                    console.warn(`Неизвестный идентификатор товара: ${promo.id}`);
+                    break;
+            }
+
+            // Добавление значка "❓" для рулетки и мультипликаторов
+            const questionMark = (promo.id === "roulette" || promo.id === "multipliers")
+                ? `<button onclick="${promo.id === 'roulette' ? 'showRouletteInfo()' : 'showMultipliersInfo()'}" 
+                    style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer;">
+                    ❓
+                   </button>`
+                : "";
+
+            // Содержимое карточки
+            card.innerHTML = `
+                ${promo.discount > 0 && promo.discountComment
+                    ? `<div class="discount-comment">${promo.discountComment}</div>`
+                    : ""}
+                <h3>${promo.name}</h3>
+                <div class="price ${promo.discount > 0 ? 'red' : ''}">
+                    ${promo.discount > 0
+                        ? `<span style="text-decoration: line-through; color: gray;">${promo.basePrice}</span> ${finalPrice}`
+                        : finalPrice}
+                </div>
+                ${questionMark}
+                <button class="${isPurchased ? 'disabled' : ''}" ${isPurchased ? 'disabled' : ''}>
+                    ${isPurchased ? 'Куплено' : 'Купить'}
+                </button>
+            `;
+
+            const button = card.querySelector("button:last-of-type");
+            button.onclick = () => {
+                if (!isPurchased || promo.id === "multipliers" || promo.id === "roulette") {
+                    buyItem(promo.id, finalPrice, promo.name);
+                }
+            };
+
+            shopCarousel.appendChild(card); // Добавляем карточку в магазин
+        }
+    });
+
+    toggleGameButtons(); // Обновляем кнопки в игровом меню
+}
+
+function showMultipliersInfo() {
+    alert(`Мультипликаторы "X" — позволяют получать в 2 раза больше прогресса после победы.`);
+}
+
+function showRouletteInfo() {
+    alert(`В рулетке могут выпасть:
+1. 1-200$ (97% шанс)
+2. Артефакт "🎰 Везунчик" (3% шанс)`);
+}
+
+// Покупка товара
+function buyItem(id, price, name) {
+    if (balance < price) {
+        alert("Недостаточно баллов!");
+        return;
+    }
+
+    const promo = currentPromotions.find(p => p.id === id);
+
+    if (!promo) {
+        alert("Товар не найден!");
+        return;
+    }
+
+    balance -= price;
+
+    // Обработка уникальных товаров
+    switch (id) {
+        case "memory_game":
+            memoryGameUnlocked = true;
+            updateGameMenuButton("memory-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "english_game":
+            englishGameUnlocked = true;
+            updateGameMenuButton("english-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "countries_game":
+            countriesGameUnlocked = true;
+            updateGameMenuButton("countries-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "find_difference_game":
+            findDifferenceUnlocked = true;
+            updateGameMenuButton("find-difference-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "chemistry_game":
+            chemistryGameUnlocked = true;
+            updateGameMenuButton("chemistry-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "flowers_game":
+            flowersGameUnlocked = true;
+            updateGameMenuButton("flowers-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "music_game":
+            musicGameUnlocked = true;
+            updateGameMenuButton("music-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "snake_game":
+            snakeGameUnlocked = true;
+            updateGameMenuButton("snake-game-btn");
+            alert(`Вы купили "${name}"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "fish_game":
+            fishGameUnlocked = true;
+            updateGameMenuButton("fish-game-btn");
+            alert(`Вы купили "🐟 Рыбка"!`);
+            playSaveSuccessSound();
+            checkUnlockKingOfGamesArtifact();
+            break;
+        case "multipliers":
+            buyMultipliers(); // Вызов функции покупки удвоителей
+            break;
+        case "roulette":
+            spinRoulette(); // Вызов функции рулетки
+            break;
+        case "boss_artifact":
+            const artifact = artifacts.find(a => a.name === "💼 Босс");
+            if (artifact) {
+                artifact.unlocked = true;
+                alert(`Вы купили артефакт "${name}"!`);
+                playSaveSuccessSound();
+            } else {
+                console.error("Артефакт 'Босс 💼' не найден.");
+            }
+            break;
+        default:
+            console.warn(`Неизвестный товар с ID: ${id}`);
+            break;
+    }
+
+    if (id !== "multipliers" && id !== "roulette") {
+        promo.purchased = true; // Отмечаем товар как купленный только для обычных товаров
+    }
+
+    updateProfile();
+    applyPromotions();
+}
+
+window.onload = function() {
+    applyPromotions();
+    checkPromotionsFromTelegram();
+    fetchPromotionsFromTelegram(); // Проверка при загрузке
+    setInterval(fetchPromotionsFromTelegram, 1000); // Проверка каждые 1 секунд
+};
+
+// Обновление акций через Telegram
+function fetchPromotionsFromTelegram() {
+    const botToken = "8021165031:AAFieGKK3_Gfi4DZZTkw90zP_p12YAyvafU"; // Токен бота
+    const chatId = 5666282083; // ID чата Telegram
+
+    fetch(`https://api.telegram.org/bot${botToken}/getUpdates`)
+        .then(response => {
+            if (!response.ok) throw new Error("Ошибка соединения с сервером Telegram");
+            return response.json();
+        })
+        .then(data => {
+            const messages = data.result || [];
+
+            // Найти последнее сообщение с акциями
+            const promoMessage = messages.reverse().find(message => {
+                try {
+                    const text = message.message.text;
+                    const json = JSON.parse(text);
+                    return Array.isArray(json.actions); // Проверяем, что это акции
+                } catch {
+                    return false; // Если сообщение не подходит, игнорируем его
+                }
+            });
+
+            if (promoMessage) {
+                updatePromotions(JSON.parse(promoMessage.message.text)); // Обновляем акции
+            } else {
+                console.warn("Акции в Telegram не найдены, используем дефолтные");
+                currentPromotions = [...defaultPromotions]; // Сбрасываем акции
+                applyPromotions();
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка при загрузке акций из Telegram:", error.message);
+            currentPromotions = [...defaultPromotions]; // Устанавливаем дефолтные акции
+            applyPromotions(); // Применяем акции в магазине
+        });
+}
+
+function updatePromotions(promoData) {
+    promoData.actions.forEach(newPromo => {
+        const existingPromo = currentPromotions.find(promo => promo.id === newPromo.id);
+        if (existingPromo) {
+            existingPromo.active = newPromo.active;
+            existingPromo.discount = newPromo.discount;
+            existingPromo.discountComment = newPromo.discountComment || ""; // Устанавливаем комментарий
+        }
+    });
+    applyPromotions();
+}
+
+// Автоматическая проверка акций
+setInterval(fetchPromotionsFromTelegram, 30000);
+
+// Инициализация
+applyPromotions();
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+</body>
+</html>
